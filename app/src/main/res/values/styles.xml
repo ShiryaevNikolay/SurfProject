@@ -1,0 +1,14 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="ThemeDark"/>
+
+    <style name="ThemeDark" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="android:windowBackground">@color/bgColor</item>
+        <item name="android:statusBarColor">@color/bgColor</item>
+        <item name="colorPrimary">@color/bgColor</item>
+        <item name="colorPrimaryDark">@color/bgColor</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="materialButtonStyle">@style/ButtonStyle</item>
+        <item name="textInputLayoutFocusedRectEnabled">@style/InputLayoutStyle</item>
+    </style>
+</resources>

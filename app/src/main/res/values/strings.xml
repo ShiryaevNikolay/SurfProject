@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SurfApp</string>
+    <string name="splash_image">Splash image</string>
+    <string name="input_login">Логин</string>
+    <string name="input_password">Пароль</string>
+    <string name="btn_login">Войти</string>
+    <string name="input_password_helper">Пароль должен содержать 6 симовлов</string>
+    <string name="input_login_error">Поле не может быть пустым</string>
+</resources>
