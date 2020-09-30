@@ -6,6 +6,4 @@
     <string name="btn_login">Войти</string>
     <string name="input_password_helper">Пароль должен содержать 6 симовлов</string>
     <string name="input_login_error">Поле не может быть пустым</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

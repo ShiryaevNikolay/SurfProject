@@ -13,7 +13,7 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/btn_login">
+        android:layout_above="@+id/view_btn">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,4 +51,28 @@
             </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
         </LinearLayout>
     </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/view_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:text="@string/btn_login"
+            android:stateListAnimator="@null"
+            android:elevation="0dp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true"
+            android:indeterminateTint="@color/bgColor"
+            android:elevation="1dp"
+            android:visibility="invisible" />
+    </RelativeLayout>
 </RelativeLayout>
