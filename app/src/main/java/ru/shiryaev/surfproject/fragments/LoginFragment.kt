@@ -104,7 +104,7 @@ class LoginFragment : Fragment(), View.OnClickListener {
                         "}"
                 val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
-                NetworkService().getInstance()
+                NetworkService.getInstance()
                     .getJSONApi()
                     .getToken(requestBody)
                     .enqueue(object : retrofit2.Callback<User> {
