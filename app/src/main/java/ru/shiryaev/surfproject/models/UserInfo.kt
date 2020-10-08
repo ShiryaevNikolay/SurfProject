@@ -5,24 +5,24 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
-class UserInfo {
+data class UserInfo(
     @SerializedName("id")
     @Expose
-    var id: Int? = null
+    var id: Int? = null,
 
     @SerializedName("username")
     @Expose
-    var username: String? = null
+    var username: String? = null,
 
     @SerializedName("firstName")
     @Expose
-    var firstName: String? = null
+    var firstName: String? = null,
 
     @SerializedName("lastName")
     @Expose
-    var lastName: String? = null
+    var lastName: String? = null,
 
     @SerializedName("userDescription")
     @Expose
     var userDescription: String? = null
-}
+)

@@ -12,4 +12,15 @@
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorOnPrimary">@color/colorAccent</item>
     </style>
+
+    <style name="SnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
+        <item name="backgroundTint">@color/warningColor</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="BottomNavViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@drawable/btm_nav_view_layout</item>
+        <item name="itemHorizontalTranslationEnabled">false</item>
+        <item name="itemIconTint">@color/bottom_nav_color</item>
+    </style>
 </resources>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/memesFragment"
+        android:title="@string/show_memes"
+        android:icon="@drawable/ic_show_memes"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/createMemeFragment"
+        android:title="@string/add_meme"
+        android:icon="@drawable/ic_add_meme"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/accountFragment"
+        android:title="@string/account"
+        android:icon="@drawable/ic_account"
+        app:showAsAction="ifRoom"/>
+</menu>

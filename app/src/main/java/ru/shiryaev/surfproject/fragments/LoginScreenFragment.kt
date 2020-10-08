@@ -1,5 +1,7 @@
 package ru.shiryaev.surfproject.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
@@ -8,32 +10,40 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_login.view.*
-import kotlinx.android.synthetic.main.fragment_login.view_btn
-import okhttp3.MediaType
+import com.google.android.material.snackbar.Snackbar
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_login_screen.*
+import kotlinx.android.synthetic.main.fragment_login_screen.view.*
+import kotlinx.android.synthetic.main.fragment_login_screen.view_btn
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Response
 import ru.shiryaev.surfproject.R
-import ru.shiryaev.surfproject.objects.UserLogin
+import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 import ru.shiryaev.surfproject.models.User
 import ru.shiryaev.surfproject.services.NetworkService
+import ru.shiryaev.surfproject.utils.UserUtils
 
-class LoginFragment : Fragment(), View.OnClickListener {
+class LoginScreenFragment : Fragment(), View.OnClickListener {
 
+    private lateinit var navGraphFragment: NavGraphFragment
     private var showPassword = false
     private var cursorPosition = 0
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navGraphFragment = context as NavGraphFragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        val view = inflater.inflate(R.layout.fragment_login_screen, container, false)
         view.progressBar.isVisible = false
         return view
     }
@@ -107,18 +117,23 @@ class LoginFragment : Fragment(), View.OnClickListener {
                 NetworkService.getInstance()
                     .getJSONApi()
                     .getToken(requestBody)
-                    .enqueue(object : retrofit2.Callback<User> {
-                        override fun onResponse(
-                            call: Call<User>,
-                            response: Response<User>
-                        ) {
-                            Toast.makeText(context, "${response.body()}", Toast.LENGTH_LONG).show()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                        if (it != null) {
+                            Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
+                            saveUserData(it)
+                            navGraphFragment.startMainScreenFragment()
                         }
-
-                        override fun onFailure(call: Call<User>, t: Throwable) {
-                            Toast.makeText(context, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Toast.LENGTH_LONG).show()
+                    }, {
+                        val snack = Snackbar.make(mainLayout, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null)
+                        if (context != null) {
+                            snack.view.setBackgroundResource(R.drawable.warning_layout)
+                            snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                                .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                            snack.show()
                         }
-
                     })
             } else {
                 Toast.makeText(context, "Login and Password are NULL", Toast.LENGTH_LONG).show()
@@ -134,5 +149,16 @@ class LoginFragment : Fragment(), View.OnClickListener {
             input_field_password.transformationMethod = PasswordTransformationMethod.getInstance()
             input_layout_password.setEndIcon(R.drawable.ic_eye_false)
         }
+    }
+
+    private fun saveUserData(user: User) {
+        context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.edit()?.apply {
+            this.putString(UserUtils.USER_TOKEN, user.accessToken)
+            user.userInfo?.id?.let { this.putInt(UserUtils.USER_ID, it) }
+            this.putString(UserUtils.USER_NAME, user.userInfo?.username)
+            this.putString(UserUtils.USER_FIRST_NAME, user.userInfo?.firstName)
+            this.putString(UserUtils.USER_LAST_NAME, user.userInfo?.lastName)
+            this.putString(UserUtils.USER_DESCRIPTION, user.userInfo?.userDescription)
+        }?.apply()
     }
 }

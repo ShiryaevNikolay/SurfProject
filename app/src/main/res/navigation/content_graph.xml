@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_graph"
+    app:startDestination="@id/memesFragment">
+
+    <fragment
+        android:id="@+id/memesFragment"
+        android:name="ru.shiryaev.surfproject.fragments.MemesFragment"
+        android:label="fragment_memes"
+        tools:layout="@layout/fragment_memes" />
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="ru.shiryaev.surfproject.fragments.AccountFragment"
+        android:label="fragment_account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/createMemeFragment"
+        android:name="ru.shiryaev.surfproject.fragments.CreateMemeFragment"
+        android:label="fragment_create_meme"
+        tools:layout="@layout/fragment_create_meme" />
+</navigation>

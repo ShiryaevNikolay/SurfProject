@@ -6,4 +6,8 @@
     <string name="btn_login">Войти</string>
     <string name="input_password_helper">Пароль должен содержать 6 симовлов</string>
     <string name="input_login_error">Поле не может быть пустым</string>
+    <string name="show_memes">show memes</string>
+    <string name="add_meme">add meme</string>
+    <string name="account">account</string>
+    <string name="toolbar_title_list_memes">Популярные мемы</string>
 </resources>

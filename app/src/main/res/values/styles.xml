@@ -10,5 +10,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="materialButtonStyle">@style/ButtonStyle</item>
         <item name="textInputLayoutFocusedRectEnabled">@style/InputLayoutStyle</item>
+        <item name="snackbarStyle">@style/SnackbarStyle</item>
+        <item name="bottomNavigationStyle">@style/BottomNavViewStyle</item>
     </style>
 </resources>

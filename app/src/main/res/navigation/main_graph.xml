@@ -3,20 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/splashScreenFragment">
 
     <fragment
-        android:id="@+id/splashFragment"
-        android:name="ru.shiryaev.surfproject.fragments.SplashFragment"
+        android:id="@+id/splashScreenFragment"
+        android:name="ru.shiryaev.surfproject.fragments.SplashScreenFragment"
         android:label="fragment_splash"
-        tools:layout="@layout/fragment_splash" >
+        tools:layout="@layout/fragment_splash_screen" >
         <action
-            android:id="@+id/action_splashFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/action_splashScreenFragment_to_loginScreenFragment"
+            app:destination="@id/loginScreenFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_mainScreenFragment"
+            app:destination="@id/mainScreenFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="ru.shiryaev.surfproject.fragments.LoginFragment"
+        android:id="@+id/loginScreenFragment"
+        android:name="ru.shiryaev.surfproject.fragments.LoginScreenFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login_screen" >
+        <action
+            android:id="@+id/action_loginScreenFragment_to_mainScreenFragment"
+            app:destination="@id/mainScreenFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainScreenFragment"
+        android:name="ru.shiryaev.surfproject.fragments.MainScreenFragment"
+        android:label="fragment_main_screen"
+        tools:layout="@layout/fragment_main_screen" />
 </navigation>

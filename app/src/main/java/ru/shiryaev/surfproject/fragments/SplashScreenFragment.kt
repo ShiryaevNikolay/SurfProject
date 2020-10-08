@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 
-class SplashFragment : Fragment() {
+class SplashScreenFragment : Fragment() {
 
     private lateinit var navGraphFragment: NavGraphFragment
 
@@ -23,13 +23,13 @@ class SplashFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_splash, container, false)
+        return inflater.inflate(R.layout.fragment_splash_screen, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Handler().postDelayed({
-            navGraphFragment.startLoginFragment()
+            navGraphFragment.startLoginScreenFragment()
         }, 300)
     }
 }
