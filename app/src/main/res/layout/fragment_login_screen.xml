@@ -9,7 +9,7 @@
     tools:context=".fragments.LoginScreenFragment"
     android:paddingHorizontal="16dp"
     android:paddingTop="60dp"
-    android:paddingBottom="24dp">
+    android:paddingBottom="26dp">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -54,19 +54,34 @@
         </LinearLayout>
     </ScrollView>
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/view_btn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        style="@style/CustomAuthBtn"
         android:layout_alignParentBottom="true">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
-            android:layout_height="58dp"
+            android:layout_height="60dp"
             android:text="@string/btn_login"
-            android:stateListAnimator="@null"
-            android:elevation="0dp"/>
+            android:textSize="17sp"
+            android:layout_gravity="center"
+            />
+
+<!--        <TextView-->
+<!--            android:id="@+id/login_btn"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="@string/btn_login"-->
+<!--            android:textSize="17sp"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:textColor="@color/textBtn"-->
+<!--            android:gravity="center"-->
+<!--            android:clickable="true"-->
+<!--            android:background="?android:attr/selectableItemBackground"-->
+<!--            android:focusable="true" />-->
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -75,6 +90,7 @@
             android:layout_centerInParent="true"
             android:indeterminateTint="@color/bgColor"
             android:elevation="1dp"
-            android:visibility="invisible" />
-    </RelativeLayout>
+            android:visibility="invisible"
+            android:layout_gravity="center"/>
+    </com.google.android.material.card.MaterialCardView>
 </RelativeLayout>

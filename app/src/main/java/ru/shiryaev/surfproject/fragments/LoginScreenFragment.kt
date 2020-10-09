@@ -100,11 +100,10 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
         if (input_field_password.text.isEmpty()) {
             input_layout_password.setError(context?.resources?.getString(R.string.input_login_error), false)
         }
-        val textBtn = login_btn.text
-        login_btn.text = null
+        login_btn.isVisible = false
         progressBar.isVisible = true
         Handler().postDelayed({
-            login_btn.text = textBtn
+            login_btn.isVisible = true
             progressBar.isVisible = false
 
             if (input_field_login.text.isNotEmpty() && input_field_password.text.isNotEmpty()) {
@@ -121,7 +120,6 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
                     .subscribeOn(Schedulers.io())
                     .subscribe({
                         if (it != null) {
-                            Toast.makeText(context, "$it", Toast.LENGTH_LONG).show()
                             saveUserData(it)
                             navGraphFragment.startMainScreenFragment()
                         }

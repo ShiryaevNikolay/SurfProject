@@ -6,13 +6,6 @@
         <item name="iconGravity">textStart</item>
     </style>
 
-    <style name="InputLayoutStyle" parent="Widget.Design.TextInputLayout">
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorPrimary">@color/colorAccent</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorOnPrimary">@color/colorAccent</item>
-    </style>
-
     <style name="SnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
         <item name="backgroundTint">@color/warningColor</item>
         <item name="elevation">0dp</item>
@@ -22,5 +15,9 @@
         <item name="android:background">@drawable/btm_nav_view_layout</item>
         <item name="itemHorizontalTranslationEnabled">false</item>
         <item name="itemIconTint">@color/bottom_nav_color</item>
+    </style>
+
+    <style name="CustomAuthBtn" parent="Widget.MaterialComponents.Button">
+        <item name="cardBackgroundColor">@color/colorAccent</item>
     </style>
 </resources>

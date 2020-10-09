@@ -5,9 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.MemesFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <TextView
+        android:id="@+id/info_list_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Meme list"
+        android:textSize="14sp"
+        android:text="@string/info_list_empty"
+        android:gravity="center"
         android:layout_centerInParent="true"/>
 </RelativeLayout>

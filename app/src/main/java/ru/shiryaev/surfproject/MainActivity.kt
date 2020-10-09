@@ -1,9 +1,11 @@
 package ru.shiryaev.surfproject
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity(), NavGraphFragment {
     }
 
     override fun startMainScreenFragment() {
+        // Скрываем клавиатуру
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+
         mNavController.navigate(R.id.action_loginScreenFragment_to_mainScreenFragment)
 
         // Устанавливаем цвет StatusBar

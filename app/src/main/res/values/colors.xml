@@ -3,6 +3,7 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#1EF0D7</color>
+    <color name="textBtn">#1F2032</color>
     <color name="bgColor">#23213F</color>
     <color name="secondaryColor">#312F51</color>
     <color name="btmNavViewColor">#12102B</color>
