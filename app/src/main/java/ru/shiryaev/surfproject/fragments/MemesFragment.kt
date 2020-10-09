@@ -45,7 +45,7 @@ class MemesFragment : Fragment() {
 
         view.info_list_empty.isVisible = memesAdapter.itemCount == 0
 
-        NetworkService.getInstance()
+        NetworkService
             .getJSONApi()
             .getMemes()
             .observeOn(AndroidSchedulers.mainThread())

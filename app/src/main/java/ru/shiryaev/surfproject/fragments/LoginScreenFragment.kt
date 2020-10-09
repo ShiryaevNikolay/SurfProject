@@ -113,7 +113,7 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
                         "}"
                 val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
-                NetworkService.getInstance()
+                NetworkService
                     .getJSONApi()
                     .getToken(requestBody)
                     .observeOn(AndroidSchedulers.mainThread())

@@ -5,7 +5,7 @@ import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.shiryaev.surfproject.interfaces.JSONPlaceHolderApi
 
-class NetworkService {
+object NetworkService {
 
     private var mRetrofit: Retrofit = Retrofit.Builder()
         .baseUrl("https://virtserver.swaggerhub.com/")
@@ -15,16 +15,5 @@ class NetworkService {
 
     fun getJSONApi() : JSONPlaceHolderApi {
         return mRetrofit.create(JSONPlaceHolderApi::class.java)
-    }
-
-    companion object {
-        private var mInstance: NetworkService? = null
-
-        fun getInstance() : NetworkService {
-            if (mInstance == null) {
-                mInstance = NetworkService()
-            }
-            return mInstance as NetworkService
-        }
     }
 }
