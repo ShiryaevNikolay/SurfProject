@@ -17,8 +17,9 @@ class MemeItemController : BindableItemController<Meme, MemeItemController.Holde
     inner class Holder(parent: ViewGroup) : BindableViewHolder<Meme>(parent, R.layout.meme_item) {
         override fun bind(data: Meme?) {
             if (data != null) {
-                itemView.title.text = data.title
                 Glide.with(itemView).load(data.photoUrl).into(itemView.photoMeme)
+                itemView.title.text = data.title
+                itemView.btn_favorite.isChecked = data.isFavorite!!
             }
         }
     }

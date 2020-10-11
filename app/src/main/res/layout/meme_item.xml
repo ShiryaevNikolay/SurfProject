@@ -32,7 +32,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:text="fdfjgk"/>
+                android:textColor="?android:attr/textColorPrimary"/>
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/btn_favorite"
@@ -48,7 +48,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 style="@style/ShareCheckBox"
-                android:theme="@style/FavoriteCheckBox"
+                android:theme="@style/ShareCheckBox"
                 android:layout_below="@+id/title"
                 android:layout_toEndOf="@+id/btn_favorite"/>
         </RelativeLayout>

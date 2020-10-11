@@ -11,5 +11,6 @@
         <item name="materialButtonStyle">@style/ButtonStyle</item>
         <item name="snackbarStyle">@style/SnackbarStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavViewStyle</item>
+        <item name="checkboxStyle">@style/FavoriteCheckBox</item>
     </style>
 </resources>
