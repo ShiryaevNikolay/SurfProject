@@ -2,28 +2,27 @@ package ru.shiryaev.surfproject.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_login_screen.*
+import kotlinx.android.synthetic.main.fragment_login_screen.mainLayout
 import kotlinx.android.synthetic.main.fragment_memes.*
 import kotlinx.android.synthetic.main.fragment_memes.view.*
-import kotlinx.android.synthetic.main.meme_item.*
-import kotlinx.android.synthetic.main.meme_item.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
-import ru.shiryaev.surfproject.adapters.ListMemeAdapter
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.services.NetworkService
 import ru.shiryaev.surfproject.utils.MemeItemController
@@ -53,8 +52,6 @@ class MemesFragment : Fragment(), View.OnClickListener {
 
         initRecyclerView(view.recyclerView)
 
-        view.info_list_empty.isVisible = memesAdapter.itemCount == 0
-
         NetworkService
             .getJSONApi(NetworkService.GET_MEMES)
             ?.getMemes()
@@ -62,8 +59,7 @@ class MemesFragment : Fragment(), View.OnClickListener {
             ?.subscribeOn(Schedulers.io())
             ?.subscribe({
                 if (it != null) {
-                    Toast.makeText(mContext, "${it[0]}", Toast.LENGTH_LONG).show()
-//                    memesAdapter.setList(it)
+                    view.progressBar.isVisible = false
                     val memesList = ItemList.create().apply {
                         addAll(it, memeController)
                     }
@@ -71,7 +67,16 @@ class MemesFragment : Fragment(), View.OnClickListener {
                     view.info_list_empty.isVisible = memesAdapter.itemCount == 0
                 }
             }, {
-                Toast.makeText(mContext, "Что-то пошло не так", Toast.LENGTH_LONG).show()
+                view.progressBar.isVisible = false
+                view.info_list_empty.isVisible = false
+                val snack = Snackbar.make(mainLayout, "Произошла ошибка", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                if (context != null) {
+                    snack.view.setBackgroundResource(R.drawable.warning_layout)
+                    snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                        .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                    snack.show()
+                }
             })
         return view
     }
