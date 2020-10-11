@@ -1,24 +1,31 @@
 package ru.shiryaev.surfproject.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.RippleDrawable
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_memes.view.*
+import kotlinx.android.synthetic.main.meme_item.*
+import kotlinx.android.synthetic.main.meme_item.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.adapters.ListMemeAdapter
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.services.NetworkService
 
-class MemesFragment : Fragment() {
+class MemesFragment : Fragment(), View.OnClickListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var memesAdapter: ListMemeAdapter
@@ -30,6 +37,7 @@ class MemesFragment : Fragment() {
         currentFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as CurrentFragmentListener
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,6 +73,20 @@ class MemesFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         currentFragment.currentFragment(NAME_FRAGMENT)
+
+//        btn_favorite.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.btn_favorite -> onCLickFavorite(v)
+        }
+    }
+
+    private fun onCLickFavorite(v: View) {
+        Handler().postDelayed({
+            //
+        }, 100)
     }
 
     companion object {

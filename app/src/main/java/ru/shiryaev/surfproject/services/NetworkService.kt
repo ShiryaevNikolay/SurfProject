@@ -8,7 +8,7 @@ import ru.shiryaev.surfproject.interfaces.JSONPlaceHolderApi
 object NetworkService {
 
     private var mRetrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://virtserver.swaggerhub.com/")
+        .baseUrl("https://r2.mocker.surfstudio.ru/")
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(GsonConverterFactory.create())
         .build()

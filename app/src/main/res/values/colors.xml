@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#1EF0D7</color>
@@ -9,4 +10,5 @@
     <color name="btmNavViewColor">#12102B</color>
     <color name="warningColor">#FF575D</color>
     <color name="textColor">#FEFEFE</color>
+    <color name="ripple_effect">#501EF0D7</color>
 </resources>

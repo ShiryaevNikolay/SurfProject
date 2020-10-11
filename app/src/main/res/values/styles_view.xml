@@ -20,4 +20,16 @@
     <style name="CustomAuthBtn" parent="Widget.MaterialComponents.Button">
         <item name="cardBackgroundColor">@color/colorAccent</item>
     </style>
+
+    <style name="FavoriteCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_checkbox_favorite</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/colorAccent</item>
+    </style>
+
+    <style name="ShareCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_checkbox_share</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlActivated">@color/white</item>
+    </style>
 </resources>

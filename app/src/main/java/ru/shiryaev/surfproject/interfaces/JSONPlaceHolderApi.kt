@@ -12,6 +12,6 @@ interface JSONPlaceHolderApi {
     @POST("AndroidSchool/SurfAndroidSchool/1.0.0/auth/login")
     fun getToken(@Body body: RequestBody): Observable<User>
 
-    @GET("AndroidSchool/SurfAndroidSchool/1.0.0/memes")
+    @GET("android_vsu/memes")
     fun getMemes() : Observable<List<Meme>>
 }

@@ -83,7 +83,7 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v) {
-            view_btn.login_btn -> clickLoginBtn()
+            view_btn.login_btn -> Handler().postDelayed({clickLoginBtn()}, 200)
             input_layout_password.endIconImageButton -> {
                 showPassword = !showPassword
                 cursorPosition = input_field_password.selectionStart

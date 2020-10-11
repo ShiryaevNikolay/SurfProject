@@ -18,12 +18,7 @@ class ListMemeAdapter : RecyclerView.Adapter<ListMemeAdapter.MemeHolder>() {
 
     override fun onBindViewHolder(holder: MemeHolder, position: Int) {
         if (listMemes.isNotEmpty()) {
-            holder.itemView.id_meme.text = listMemes[0].id
             holder.itemView.title.text = listMemes[0].title
-            holder.itemView.description.text = listMemes[0].description
-            holder.itemView.isFavorite.text = listMemes[0].isFavorite.toString()
-            holder.itemView.createdDate.text = listMemes[0].createdDate.toString()
-            holder.itemView.photoUrl.text = listMemes[0].photoUrl
         }
     }
 
