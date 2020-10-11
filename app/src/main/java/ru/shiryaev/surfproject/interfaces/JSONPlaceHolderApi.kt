@@ -10,8 +10,8 @@ import ru.shiryaev.surfproject.models.User
 
 interface JSONPlaceHolderApi {
     @POST("AndroidSchool/SurfAndroidSchool/1.0.0/auth/login")
-    fun getToken(@Body body: RequestBody): Observable<User>
+    fun postLogin(@Body body: RequestBody): Observable<User>
 
-    @GET("android_vsu/memes")
+    @GET("memes")
     fun getMemes() : Observable<List<Meme>>
 }

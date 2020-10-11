@@ -13,9 +13,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_memes.*
 import kotlinx.android.synthetic.main.fragment_memes.view.*
 import kotlinx.android.synthetic.main.meme_item.*
 import kotlinx.android.synthetic.main.meme_item.view.*
@@ -24,12 +26,16 @@ import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.adapters.ListMemeAdapter
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.services.NetworkService
+import ru.shiryaev.surfproject.utils.MemeItemController
+import ru.surfstudio.android.easyadapter.EasyAdapter
+import ru.surfstudio.android.easyadapter.ItemList
 
 class MemesFragment : Fragment(), View.OnClickListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
-    private lateinit var memesAdapter: ListMemeAdapter
     private lateinit var mContext: Context
+    private val memesAdapter = EasyAdapter()
+    private val memeController = MemeItemController()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,24 +50,24 @@ class MemesFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_memes, container, false)
-        memesAdapter = ListMemeAdapter()
-        view.recyclerView.apply {
-            setHasFixedSize(true)
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            adapter = memesAdapter
-        }
+
+        initRecyclerView(view.recyclerView)
 
         view.info_list_empty.isVisible = memesAdapter.itemCount == 0
 
         NetworkService
-            .getJSONApi()
-            .getMemes()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe({
+            .getJSONApi(NetworkService.GET_MEMES)
+            ?.getMemes()
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribeOn(Schedulers.io())
+            ?.subscribe({
                 if (it != null) {
                     Toast.makeText(mContext, "${it[0]}", Toast.LENGTH_LONG).show()
-                    memesAdapter.setList(it)
+//                    memesAdapter.setList(it)
+                    val memesList = ItemList.create().apply {
+                        addAll(it, memeController)
+                    }
+                    memesAdapter.setItems(memesList)
                     view.info_list_empty.isVisible = memesAdapter.itemCount == 0
                 }
             }, {
@@ -87,6 +93,14 @@ class MemesFragment : Fragment(), View.OnClickListener {
         Handler().postDelayed({
             //
         }, 100)
+    }
+
+    private fun initRecyclerView(recyclerView: RecyclerView) {
+        recyclerView.apply {
+            setHasFixedSize(true)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = memesAdapter
+        }
     }
 
     companion object {

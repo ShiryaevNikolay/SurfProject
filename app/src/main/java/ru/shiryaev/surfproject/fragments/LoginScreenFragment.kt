@@ -1,7 +1,6 @@
 package ru.shiryaev.surfproject.fragments
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
@@ -114,11 +113,11 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
                 val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
                 NetworkService
-                    .getJSONApi()
-                    .getToken(requestBody)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe({
+                    .getJSONApi(NetworkService.POST_LOGIN)
+                    ?.postLogin(requestBody)
+                    ?.observeOn(AndroidSchedulers.mainThread())
+                    ?.subscribeOn(Schedulers.io())
+                    ?.subscribe({
                         if (it != null) {
                             saveUserData(it)
                             navGraphFragment.startMainScreenFragment()

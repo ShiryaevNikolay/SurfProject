@@ -22,7 +22,7 @@ class ListMemeAdapter : RecyclerView.Adapter<ListMemeAdapter.MemeHolder>() {
         }
     }
 
-    override fun getItemCount() = listMemes.size + 5
+    override fun getItemCount() = listMemes.size
 
     fun setList(listMemes: List<Meme>) {
         this.listMemes = listMemes as ArrayList<Meme>

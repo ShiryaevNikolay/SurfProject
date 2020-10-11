@@ -9,6 +9,7 @@
     <style name="SnackbarStyle" parent="Widget.MaterialComponents.Snackbar">
         <item name="backgroundTint">@color/warningColor</item>
         <item name="elevation">0dp</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <style name="BottomNavViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
