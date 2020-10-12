@@ -2,6 +2,7 @@ package ru.shiryaev.surfproject.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,19 +21,21 @@ import kotlinx.android.synthetic.main.fragment_memes.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
+import ru.shiryaev.surfproject.interfaces.MemeItemListener
+import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.services.NetworkService
 import ru.shiryaev.surfproject.utils.MemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
-class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItemListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var viewFragment: View
     private val memesAdapter = EasyAdapter()
-    private val memeController = MemeItemController()
+    private val memeController = MemeItemController(this)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -68,6 +71,12 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         mSwipeRefreshLayout.post {
             requestMemes(viewFragment)
+        }
+    }
+
+    override fun onClick(v: View, data: Meme) {
+        when(v.id) {
+            R.id.btn_share -> shareMeme(data)
         }
     }
 
@@ -107,6 +116,17 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     snack.show()
                 }
             })
+    }
+
+    private fun shareMeme(data: Meme) {
+        val shareMeme = Intent.createChooser(Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, data.title)
+            putExtra(Intent.EXTRA_STREAM, data.photoUrl)
+            type = "image/*"
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }, null)
+        startActivity(shareMeme)
     }
 
     companion object {
