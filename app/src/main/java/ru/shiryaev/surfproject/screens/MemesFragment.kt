@@ -1,4 +1,4 @@
-package ru.shiryaev.surfproject.fragments
+package ru.shiryaev.surfproject.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -21,21 +21,20 @@ import kotlinx.android.synthetic.main.fragment_memes.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
-import ru.shiryaev.surfproject.interfaces.MemeItemListener
 import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.services.NetworkService
 import ru.shiryaev.surfproject.utils.MemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
-class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItemListener {
+class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var viewFragment: View
     private val memesAdapter = EasyAdapter()
-    private val memeController = MemeItemController(this)
+    private val memeController = MemeItemController()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,6 +64,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
         super.onResume()
         currentFragment.currentFragment(NAME_FRAGMENT)
 
+        memeController.onClickShareBtn = { shareMeme(it) }
+
+        memeController.onClickItemListener = { itemClick(it) }
+
         mSwipeRefreshLayout.setOnRefreshListener(this)
     }
 
@@ -74,14 +77,8 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
         }
     }
 
-    override fun onClick(v: View, data: Meme) {
-        when(v.id) {
-            R.id.btn_share -> shareMeme(data)
-        }
-    }
-
     private fun initRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.apply {
+        with(recyclerView) {
             setHasFixedSize(false)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = memesAdapter
@@ -127,6 +124,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }, null)
         startActivity(shareMeme)
+    }
+
+    private fun itemClick(data: Meme) {
+        // Click on item
     }
 
     companion object {

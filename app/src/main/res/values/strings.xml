@@ -10,6 +10,6 @@
     <string name="add_meme">add meme</string>
     <string name="account">account</string>
     <string name="toolbar_title_list_memes">Популярные мемы</string>
-    <string name="info_list_empty">Не удалось загрузить ленту\nОбновите экран или попробуйте позже.</string>
+    <string name="info_list_empty">Не удалось загрузить ленту</string>
     <string name="item_meme_image">A meme</string>
 </resources>

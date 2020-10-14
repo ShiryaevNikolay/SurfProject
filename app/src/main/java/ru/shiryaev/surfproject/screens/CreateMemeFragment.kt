@@ -1,4 +1,4 @@
-package ru.shiryaev.surfproject.fragments
+package ru.shiryaev.surfproject.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater

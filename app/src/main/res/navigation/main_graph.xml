@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="ru.shiryaev.surfproject.fragments.SplashScreenFragment"
+        android:name="ru.shiryaev.surfproject.screens.start.SplashScreenFragment"
         android:label="fragment_splash"
         tools:layout="@layout/fragment_splash_screen" >
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginScreenFragment"
-        android:name="ru.shiryaev.surfproject.fragments.LoginScreenFragment"
+        android:name="ru.shiryaev.surfproject.screens.auth.LoginScreenFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login_screen" >
         <action
@@ -34,7 +34,8 @@
     </fragment>
     <fragment
         android:id="@+id/mainScreenFragment"
-        android:name="ru.shiryaev.surfproject.fragments.MainScreenFragment"
+        android:name="ru.shiryaev.surfproject.screens.main.MainScreenFragment"
         android:label="fragment_main_screen"
-        tools:layout="@layout/fragment_main_screen" />
+        tools:layout="@layout/fragment_main_screen" >
+    </fragment>
 </navigation>

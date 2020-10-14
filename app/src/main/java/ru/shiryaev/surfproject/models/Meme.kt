@@ -1,8 +1,11 @@
 package ru.shiryaev.surfproject.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "meme_table")
 data class Meme(
     @SerializedName("createdDate")
     @Expose
@@ -14,6 +17,7 @@ data class Meme(
 
     @SerializedName("id")
     @Expose
+    @PrimaryKey
     val id: String? = null,
 
     @SerializedName("isFavorite")

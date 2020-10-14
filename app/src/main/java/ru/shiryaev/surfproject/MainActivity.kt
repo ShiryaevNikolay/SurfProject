@@ -13,7 +13,7 @@ import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 
 class MainActivity : AppCompatActivity(), NavGraphFragment {
 
-    lateinit var mNavController: NavController
+    private lateinit var mNavController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
