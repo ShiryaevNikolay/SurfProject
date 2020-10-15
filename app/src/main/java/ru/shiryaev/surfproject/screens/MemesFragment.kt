@@ -1,4 +1,4 @@
-package ru.shiryaev.surfproject.fragments
+package ru.shiryaev.surfproject.screens
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,35 +11,42 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_memes.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
-import ru.shiryaev.surfproject.interfaces.MemeItemListener
 import ru.shiryaev.surfproject.models.Meme
-import ru.shiryaev.surfproject.services.NetworkService
+import ru.shiryaev.surfproject.utils.App
 import ru.shiryaev.surfproject.utils.MemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
-class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItemListener {
+class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var viewFragment: View
     private val memesAdapter = EasyAdapter()
-    private val memeController = MemeItemController(this)
+    private val memeController = MemeItemController()
+
+    private lateinit var listMeme: LiveData<List<Meme>>
+    private lateinit var progressBarState: LiveData<Boolean>
+    private lateinit var listEmptyState: LiveData<Boolean>
+    private lateinit var refreshState: LiveData<Boolean>
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+        progressBarState = (mContext as MainActivity).mainActivityViewModel.progressBarState
+        listEmptyState = (mContext as MainActivity).mainActivityViewModel.listEmptyState
+        listMeme = (mContext as MainActivity).mainActivityViewModel.allMeme
+        refreshState = (mContext as MainActivity).mainActivityViewModel.refreshState
         currentFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as CurrentFragmentListener
     }
 
@@ -51,13 +58,42 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
     ): View? {
         val view = inflater.inflate(R.layout.fragment_memes, container, false)
 
+        progressBarState.observe((mContext as MainActivity), { view.progressBar.isVisible = it })
+
+        (mContext as MainActivity).snackbarShow = {
+            val snack = Snackbar.make(view.mainLayout, "Произошла ошибка", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+            if (context != null) {
+                snack.view.setBackgroundResource(R.drawable.warning_layout)
+                snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                snack.show()
+            }
+            view.info_list_empty.isVisible = memesAdapter.itemCount == 0
+        }
+
+        (mContext as MainActivity).refreshState = {
+            view.mainLayout.isRefreshing = false
+            view.info_list_empty.isVisible = memesAdapter.itemCount == 0
+        }
+
+        listMeme.observe((mContext as MainActivity), {
+            if (it != null) {
+                val memesList = ItemList.create().apply {
+                    addAll(it, memeController)
+                }
+                memesAdapter.setItems(memesList)
+            }
+            view.info_list_empty.isVisible = memesAdapter.itemCount == 0
+        })
+
         viewFragment = view
 
         mSwipeRefreshLayout = view.mainLayout
 
         initRecyclerView(view.recyclerView)
 
-        requestMemes(view)
+        (mContext as MainActivity).mainActivityViewModel.requestMeme(App.LOADING_MEME)
         return view
     }
 
@@ -65,57 +101,25 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
         super.onResume()
         currentFragment.currentFragment(NAME_FRAGMENT)
 
+        memeController.onClickShareBtn = { shareMeme(it) }
+
+        memeController.onClickItemListener = { itemClick(it) }
+
         mSwipeRefreshLayout.setOnRefreshListener(this)
     }
 
     override fun onRefresh() {
         mSwipeRefreshLayout.post {
-            requestMemes(viewFragment)
-        }
-    }
-
-    override fun onClick(v: View, data: Meme) {
-        when(v.id) {
-            R.id.btn_share -> shareMeme(data)
+            (mContext as MainActivity).mainActivityViewModel.requestMeme(App.REFRESH_MEME)
         }
     }
 
     private fun initRecyclerView(recyclerView: RecyclerView) {
-        recyclerView.apply {
+        with(recyclerView) {
             setHasFixedSize(false)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = memesAdapter
         }
-    }
-
-    private fun requestMemes(view: View) {
-        NetworkService
-            .getJSONApi(NetworkService.GET_MEMES)
-            ?.getMemes()
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.doFinally {
-                view.progressBar.isVisible = false
-                view.mainLayout.isRefreshing = false
-                view.info_list_empty.isVisible = memesAdapter.itemCount == 0
-            }
-            ?.subscribe({
-                if (it != null) {
-                    val memesList = ItemList.create().apply {
-                        addAll(it, memeController)
-                    }
-                    memesAdapter.setItems(memesList)
-                }
-            }, {
-                val snack = Snackbar.make(view.mainLayout, "Произошла ошибка", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null)
-                if (context != null) {
-                    snack.view.setBackgroundResource(R.drawable.warning_layout)
-                    snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-                        .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
-                    snack.show()
-                }
-            })
     }
 
     private fun shareMeme(data: Meme) {
@@ -127,6 +131,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MemeItem
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }, null)
         startActivity(shareMeme)
+    }
+
+    private fun itemClick(data: Meme) {
+        // Click on item
     }
 
     companion object {

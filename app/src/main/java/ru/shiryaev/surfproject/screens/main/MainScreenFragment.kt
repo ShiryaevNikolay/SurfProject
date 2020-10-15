@@ -1,4 +1,4 @@
-package ru.shiryaev.surfproject.fragments
+package ru.shiryaev.surfproject.screens.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.fragment_main_screen.view.*
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
+import ru.shiryaev.surfproject.screens.MemesFragment
 
 class MainScreenFragment : Fragment(), CurrentFragmentListener {
 

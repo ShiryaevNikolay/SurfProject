@@ -1,4 +1,4 @@
-package ru.shiryaev.surfproject.fragments
+package ru.shiryaev.surfproject.screens.start
 
 import android.content.Context
 import android.os.Bundle

@@ -3,8 +3,6 @@ package ru.shiryaev.surfproject.services
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
-import ru.shiryaev.surfproject.interfaces.JSONPlaceHolderApi
 
 object NetworkService {
 
@@ -23,7 +21,7 @@ object NetworkService {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    fun getJSONApi(request: String) : JSONPlaceHolderApi? {
+    fun getJSONApi(request: String) : NetworkServiceApi? {
         return when(request) {
             POST_LOGIN -> postLogin()
             GET_MEMES -> getMemes()
@@ -31,11 +29,11 @@ object NetworkService {
         }
     }
 
-    private fun postLogin() : JSONPlaceHolderApi {
-        return mRetrofitPostLogin.create(JSONPlaceHolderApi::class.java)
+    private fun postLogin() : NetworkServiceApi {
+        return mRetrofitPostLogin.create(NetworkServiceApi::class.java)
     }
 
-    private fun getMemes() : JSONPlaceHolderApi {
-        return mRetrofitGetMemes.create(JSONPlaceHolderApi::class.java)
+    private fun getMemes() : NetworkServiceApi {
+        return mRetrofitGetMemes.create(NetworkServiceApi::class.java)
     }
 }

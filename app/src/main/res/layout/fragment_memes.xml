@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:id="@+id/mainLayout"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:context=".fragments.MemesFragment"
+    tools:context=".screens.MemesFragment"
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
