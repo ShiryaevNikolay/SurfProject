@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import ru.shiryaev.surfproject.R
-import ru.shiryaev.surfproject.databinding.FragmentShowMemeScreenBinding
+//import ru.shiryaev.surfproject.databinding.FragmentShowMemeScreenBinding
 
 class ShowMemeScreenFragment : Fragment() {
     override fun onCreateView(
@@ -18,15 +18,16 @@ class ShowMemeScreenFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentShowMemeScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_meme_screen, container, false)
-        val view = binding.root
+//        val binding: FragmentShowMemeScreenBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_meme_screen, container, false)
+//        val view = binding.root
+        val view = inflater.inflate(R.layout.fragment_show_meme_screen, container, false)
         return view
     }
 
-    companion object {
-        @BindingAdapter("android:src")
-        fun setImageUrl(imageView: ImageView, url: String) {
-            Glide.with(imageView).load(url).into(imageView)
-        }
-    }
+//    companion object {
+//        @BindingAdapter("android:src")
+//        fun setImageUrl(imageView: ImageView, url: String) {
+//            Glide.with(imageView).load(url).into(imageView)
+//        }
+//    }
 }

@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class Meme(
     @SerializedName("createdDate")
     @Expose
+    @PrimaryKey
     val createdDate: Int? = null,
 
     @SerializedName("description")
@@ -17,7 +18,6 @@ data class Meme(
 
     @SerializedName("id")
     @Expose
-    @PrimaryKey
     val id: String? = null,
 
     @SerializedName("isFavorite")
