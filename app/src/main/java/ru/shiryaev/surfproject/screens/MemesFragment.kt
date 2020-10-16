@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_memes.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
+import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.utils.App
 import ru.shiryaev.surfproject.utils.MemeItemController
@@ -29,6 +30,7 @@ import ru.surfstudio.android.easyadapter.ItemList
 class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
+    private lateinit var showMeme: ShowMemeListener
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var viewFragment: View
@@ -47,7 +49,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         listEmptyState = (mContext as MainActivity).mainActivityViewModel.listEmptyState
         listMeme = (mContext as MainActivity).mainActivityViewModel.allMeme
         refreshState = (mContext as MainActivity).mainActivityViewModel.refreshState
-        currentFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as CurrentFragmentListener
+        with((context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0)) {
+            currentFragment = this as CurrentFragmentListener
+            showMeme = this as ShowMemeListener
+        }
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -99,7 +104,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     override fun onResume() {
         super.onResume()
-        currentFragment.currentFragment(NAME_FRAGMENT)
+        currentFragment.currentFragment(MEMES_FRAGMENT)
 
         memeController.onClickShareBtn = { shareMeme(it) }
 
@@ -134,10 +139,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun itemClick(data: Meme) {
-        // Click on item
+        showMeme.showMeme(data)
     }
 
     companion object {
-        const val NAME_FRAGMENT = "MemesFragment"
+        const val MEMES_FRAGMENT = "MemesFragment"
     }
 }

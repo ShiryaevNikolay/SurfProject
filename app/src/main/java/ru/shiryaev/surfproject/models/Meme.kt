@@ -30,5 +30,5 @@ data class Meme(
 
     @SerializedName("title")
     @Expose
-    val title: String? = null,
+    val title: String? = null
 )

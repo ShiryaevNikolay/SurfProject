@@ -9,7 +9,11 @@
         android:id="@+id/memesFragment"
         android:name="ru.shiryaev.surfproject.screens.MemesFragment"
         android:label="fragment_memes"
-        tools:layout="@layout/fragment_memes" />
+        tools:layout="@layout/fragment_memes" >
+        <action
+            android:id="@+id/action_memesFragment_to_showMemeFragment"
+            app:destination="@id/showMemeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="ru.shiryaev.surfproject.screens.AccountFragment"
@@ -20,4 +24,8 @@
         android:name="ru.shiryaev.surfproject.screens.CreateMemeFragment"
         android:label="fragment_create_meme"
         tools:layout="@layout/fragment_create_meme" />
+    <fragment
+        android:id="@+id/showMemeFragment"
+        android:name="ru.shiryaev.surfproject.screens.ShowMemeFragment"
+        android:label="ShowMemeFragment" />
 </navigation>
