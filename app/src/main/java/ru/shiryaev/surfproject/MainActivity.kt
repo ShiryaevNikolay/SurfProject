@@ -7,12 +7,9 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 
 class MainActivity : AppCompatActivity(), NavGraphFragment {
@@ -21,7 +18,8 @@ class MainActivity : AppCompatActivity(), NavGraphFragment {
     lateinit var mainActivityViewModel: MainActivityViewModel
         private set
 
-    var snackbarShow: (() -> Unit)? = null
+    var snackbarMemeShow: (() -> Unit)? = null
+    var snackbarLoginShow: (() -> Unit)? = null
     var refreshState: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,8 +27,11 @@ class MainActivity : AppCompatActivity(), NavGraphFragment {
         setContentView(R.layout.activity_main)
 
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        mainActivityViewModel.snackbarState.observe(this, {
-            if (it) snackbarShow?.invoke()
+        mainActivityViewModel.snackbarMemeState.observe(this, {
+            if (it) snackbarMemeShow?.invoke()
+        })
+        mainActivityViewModel.snackbarLoginState.observe(this, {
+            if (it) snackbarLoginShow?.invoke()
         })
         mainActivityViewModel.refreshState.observe(this, {
             if (!it) refreshState?.invoke()

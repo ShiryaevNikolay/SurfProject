@@ -45,7 +45,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
-        progressBarState = (mContext as MainActivity).mainActivityViewModel.progressBarState
+        progressBarState = (mContext as MainActivity).mainActivityViewModel.progressBarMemeState
         listEmptyState = (mContext as MainActivity).mainActivityViewModel.listEmptyState
         listMeme = (mContext as MainActivity).mainActivityViewModel.allMeme
         refreshState = (mContext as MainActivity).mainActivityViewModel.refreshState
@@ -65,7 +65,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
         progressBarState.observe((mContext as MainActivity), { view.progressBar.isVisible = it })
 
-        (mContext as MainActivity).snackbarShow = {
+        (mContext as MainActivity).snackbarMemeShow = {
             val snack = Snackbar.make(view.mainLayout, "Произошла ошибка", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
             if (context != null) {

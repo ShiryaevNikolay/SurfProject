@@ -6,20 +6,26 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.shiryaev.surfproject.database.repository.AppRepository
 import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.models.User
 import ru.shiryaev.surfproject.utils.App
 
 class MainActivityViewModel : ViewModel() {
     private var repository: AppRepository
     val allMeme = MutableLiveData<List<Meme>>()
-    val progressBarState = MutableLiveData<Boolean>()
+    val progressBarMemeState = MutableLiveData<Boolean>()
     val listEmptyState = MutableLiveData<Boolean>()
-    val snackbarState = MutableLiveData<Boolean>()
+    val snackbarMemeState = MutableLiveData<Boolean>()
     val refreshState = MutableLiveData<Boolean>()
 
+    val progressBarLoginState = MutableLiveData<Boolean>()
+    val snackbarLoginState = MutableLiveData<Boolean>()
+
+    val user = MutableLiveData<User>()
+
     init {
-        progressBarState.value = false
+        progressBarMemeState.value = false
         listEmptyState.value = false
-        snackbarState.value = false
+        snackbarMemeState.value = false
         refreshState.value = false
         repository = AppRepository()
     }
@@ -32,17 +38,30 @@ class MainActivityViewModel : ViewModel() {
         }
     }
 
+    fun requestLogin(login: String, password: String) {
+        repository.requestLogin(login, password)
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribeOn(Schedulers.io())
+            ?.doOnSubscribe { progressBarLoginState.value = true }
+            ?.doFinally { progressBarLoginState.value = false }
+            ?.subscribe({
+                user.value = it
+            }, {
+                snackbarLoginState.value = true
+            })
+    }
+
     private fun loadingMeme() {
         repository.requestMeme()
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribeOn(Schedulers.io())
-            ?.doOnSubscribe { progressBarState.value = true }
-            ?.doFinally { progressBarState.value = false }
+            ?.doOnSubscribe { progressBarMemeState.value = true }
+            ?.doFinally { progressBarMemeState.value = false }
             ?.subscribe({
                 allMeme.value = it
             }, {
                 listEmptyState.value = true
-                snackbarState.value = true
+                snackbarMemeState.value = true
             })
     }
 
@@ -55,7 +74,7 @@ class MainActivityViewModel : ViewModel() {
                 allMeme.value = it
             }, {
                 listEmptyState.value = true
-                snackbarState.value = true
+                snackbarMemeState.value = true
             })
     }
 }

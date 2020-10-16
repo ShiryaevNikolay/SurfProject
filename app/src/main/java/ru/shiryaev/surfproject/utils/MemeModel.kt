@@ -1,22 +1,22 @@
 package ru.shiryaev.surfproject.utils
 
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
-import com.bumptech.glide.Glide
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-class MemeModel {
+@Entity(tableName = "meme_table")
+class MemeModel  {
+    @ColumnInfo(name = "createdDate")
     var createdDate: Int? = null
+    @ColumnInfo(name = "description")
     var description: String? = null
-    var id: String? = null
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    var id: Int? = null
+    @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean? = null
+    @ColumnInfo(name = "photoUrl")
     var photoUrl: String? = null
+    @ColumnInfo(name = "title")
     var title: String? = null
-
-    companion object {
-        @BindingAdapter("app:url")
-        @JvmStatic
-        fun setImageUrl(imageView: ImageView, url: String) {
-            Glide.with(imageView.context).load(url).into(imageView)
-        }
-    }
 }

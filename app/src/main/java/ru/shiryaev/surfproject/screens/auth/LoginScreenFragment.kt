@@ -10,32 +10,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_login_screen.*
 import kotlinx.android.synthetic.main.fragment_login_screen.view.*
 import kotlinx.android.synthetic.main.fragment_login_screen.view_btn
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
+import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 import ru.shiryaev.surfproject.models.User
-import ru.shiryaev.surfproject.services.NetworkService
 import ru.shiryaev.surfproject.utils.UserUtils
 
 class LoginScreenFragment : Fragment(), View.OnClickListener {
 
     private lateinit var navGraphFragment: NavGraphFragment
+    private lateinit var mContext: Context
+
+    private lateinit var progressBarState: LiveData<Boolean>
+    private lateinit var snackbarSate: LiveData<Boolean>
+    private lateinit var userListener: LiveData<User>
+
     private var showPassword = false
     private var cursorPosition = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        navGraphFragment = context as NavGraphFragment
+        mContext = context
+        progressBarState = (context as MainActivity).mainActivityViewModel.progressBarLoginState
+        snackbarSate = context.mainActivityViewModel.snackbarLoginState
+        userListener = context.mainActivityViewModel.user
+        navGraphFragment = context
     }
 
     override fun onCreateView(
@@ -44,6 +50,27 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_login_screen, container, false)
         view.progressBar.isVisible = false
+
+        (mContext as MainActivity).snackbarLoginShow = {
+            val snack = Snackbar.make(mainLayout, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+            if (context != null) {
+                snack.view.setBackgroundResource(R.drawable.warning_layout)
+                snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                snack.show()
+            }
+        }
+
+        progressBarState.observe((mContext as MainActivity), {
+            view.login_btn.isVisible = !it
+            view.progressBar.isVisible = it
+        })
+
+        userListener.observe((mContext as MainActivity), {
+            saveUserData(it)
+            navGraphFragment.startMainScreenFragment()
+        })
         return view
     }
 
@@ -99,43 +126,12 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
         if (input_field_password.text.isEmpty()) {
             input_layout_password.setError(context?.resources?.getString(R.string.input_login_error), false)
         }
-        login_btn.isVisible = false
-        progressBar.isVisible = true
-        Handler().postDelayed({
-            login_btn.isVisible = true
-            progressBar.isVisible = false
-
-            if (input_field_login.text.isNotEmpty() && input_field_password.text.isNotEmpty()) {
-                val json: String = "{\n" +
-                        "  \"login\": \"${input_field_login.text}\",\n" +
-                        "  \"password\": \"${input_field_password.text}\"\n" +
-                        "}"
-                val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
-
-                NetworkService
-                    .getJSONApi(NetworkService.POST_LOGIN)
-                    ?.postLogin(requestBody)
-                    ?.observeOn(AndroidSchedulers.mainThread())
-                    ?.subscribeOn(Schedulers.io())
-                    ?.subscribe({
-                        if (it != null) {
-                            saveUserData(it)
-                            navGraphFragment.startMainScreenFragment()
-                        }
-                    }, {
-                        val snack = Snackbar.make(mainLayout, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null)
-                        if (context != null) {
-                            snack.view.setBackgroundResource(R.drawable.warning_layout)
-                            snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
-                                .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
-                            snack.show()
-                        }
-                    })
-            } else {
-                Toast.makeText(context, "Login and Password are NULL", Toast.LENGTH_LONG).show()
-            }
-        }, 1000)
+        if (input_field_login.text.isNotEmpty() && input_field_password.text.isNotEmpty()) {
+            (mContext as MainActivity).mainActivityViewModel.progressBarLoginState.value = true
+            Handler().postDelayed({
+                (mContext as MainActivity).mainActivityViewModel.requestLogin(input_field_login.text.toString(), input_field_password.text.toString())
+            }, 1000)
+        }
     }
 
     private fun funShowPassword(showPassword: Boolean) {

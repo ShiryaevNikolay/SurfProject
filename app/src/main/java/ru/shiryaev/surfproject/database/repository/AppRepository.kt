@@ -11,11 +11,12 @@ import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.models.User
 import ru.shiryaev.surfproject.services.NetworkService
 import ru.shiryaev.surfproject.utils.App
+import ru.shiryaev.surfproject.utils.MemeModel
 import javax.inject.Inject
 
 class AppRepository {
     private var memeDao: MemeDao
-    private lateinit var allMeme: LiveData<List<Meme>>
+    private lateinit var allMeme: LiveData<List<MemeModel>>
     @Inject
     lateinit var roomDatabase: AppRoomDatabase
 
@@ -24,15 +25,15 @@ class AppRepository {
         memeDao = roomDatabase.memeDao()
     }
 
-    fun insert(meme: Meme) {
+    fun insert(meme: MemeModel) {
         InsertMemeAsyncTask(memeDao).execute(meme)
     }
 
-    fun update(meme: Meme) {
+    fun update(meme: MemeModel) {
         UpdateMemeAsyncTask(memeDao).execute(meme)
     }
 
-    fun delete(meme: Meme) {
+    fun delete(meme: MemeModel) {
         DeleteMemeAsyncTask(memeDao).execute(meme)
     }
 
@@ -40,7 +41,7 @@ class AppRepository {
         DeleteAllMemeAsyncTask(memeDao).execute()
     }
 
-    fun getAllMeme() : LiveData<List<Meme>> {
+    fun getAllMeme() : LiveData<List<MemeModel>> {
         return allMeme
     }
 
@@ -63,22 +64,22 @@ class AppRepository {
     }
 
     companion object {
-        private class InsertMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<Meme, Void, Void>() {
-            override fun doInBackground(vararg params: Meme?): Void? {
+        private class InsertMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<MemeModel, Void, Void>() {
+            override fun doInBackground(vararg params: MemeModel?): Void? {
                 params[0]?.let { memeDao.insert(it) }
                 return null
             }
         }
 
-        private class UpdateMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<Meme, Void, Void>() {
-            override fun doInBackground(vararg params: Meme?): Void? {
+        private class UpdateMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<MemeModel, Void, Void>() {
+            override fun doInBackground(vararg params: MemeModel?): Void? {
                 params[0]?.let { memeDao.update(it) }
                 return null
             }
         }
 
-        private class DeleteMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<Meme, Void, Void>() {
-            override fun doInBackground(vararg params: Meme?): Void? {
+        private class DeleteMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<MemeModel, Void, Void>() {
+            override fun doInBackground(vararg params: MemeModel?): Void? {
                 params[0]?.let { memeDao.delete(it) }
                 return null
             }

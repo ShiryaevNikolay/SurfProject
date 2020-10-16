@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.shiryaev.surfproject.database.room.dao.MemeDao
-import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.utils.MemeModel
 
-@Database(version = 1, entities = [Meme::class])
+@Database(version = 1, entities = [MemeModel::class])
 abstract class AppRoomDatabase : RoomDatabase() {
 
     abstract fun memeDao() : MemeDao

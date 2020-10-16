@@ -87,7 +87,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
 
     override fun showMeme(meme: Meme) {
         val args = Bundle().apply {
-            putString("idMeme", meme.id)
+            putInt("idMeme", meme.id!!.toInt())
             putString("title", meme.title)
             putString("photoUrl", meme.photoUrl)
             putString("description", meme.description)
