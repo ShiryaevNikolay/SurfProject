@@ -83,4 +83,5 @@ dependencies {
 
     implementation 'ru.surfstudio.android:easyadapter:2.0.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 }

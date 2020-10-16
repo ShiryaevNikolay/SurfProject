@@ -45,13 +45,13 @@ class AppRepository {
         return allMeme
     }
 
-    fun requestMeme() : Single<List<Meme>>? {
+    fun requestMeme() : Single<List<Meme>> {
         return NetworkService
-            .getJSONApi(NetworkService.GET_MEMES)
-            ?.getMemes()
+            .getJSONApi()
+            .getMemes()
     }
 
-    fun requestLogin(login: String, password: String) : Single<User>? {
+    fun requestLogin(login: String, password: String) : Single<User> {
         val json: String = "{\n" +
                 "  \"login\": \"${login}\",\n" +
                 "  \"password\": \"${password}\"\n" +
@@ -59,8 +59,8 @@ class AppRepository {
         val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
 
         return NetworkService
-            .getJSONApi(NetworkService.POST_LOGIN)
-            ?.postLogin(requestBody)
+            .getJSONApi()
+            .postLogin(requestBody)
     }
 
     companion object {

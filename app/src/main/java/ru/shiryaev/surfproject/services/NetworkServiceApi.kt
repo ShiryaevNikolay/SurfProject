@@ -9,7 +9,7 @@ import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.models.User
 
 interface NetworkServiceApi {
-    @POST("AndroidSchool/SurfAndroidSchool/1.0.0/auth/login")
+    @POST("auth/login")
     fun postLogin(@Body body: RequestBody): Single<User>
 
     @GET("memes")

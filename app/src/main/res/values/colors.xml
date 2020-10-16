@@ -11,4 +11,5 @@
     <color name="warningColor">#FF575D</color>
     <color name="textColor">#FEFEFE</color>
     <color name="ripple_effect">#501EF0D7</color>
+    <color name="colorAccentDisabled">#4D1EF0D7</color>
 </resources>

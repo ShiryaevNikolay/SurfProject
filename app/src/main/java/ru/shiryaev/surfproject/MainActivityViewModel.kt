@@ -40,11 +40,11 @@ class MainActivityViewModel : ViewModel() {
 
     fun requestLogin(login: String, password: String) {
         repository.requestLogin(login, password)
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribeOn(Schedulers.io())
-            ?.doOnSubscribe { progressBarLoginState.value = true }
-            ?.doFinally { progressBarLoginState.value = false }
-            ?.subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe { progressBarLoginState.value = true }
+            .doFinally { progressBarLoginState.value = false }
+            .subscribe({
                 user.value = it
             }, {
                 snackbarLoginState.value = true
@@ -53,11 +53,11 @@ class MainActivityViewModel : ViewModel() {
 
     private fun loadingMeme() {
         repository.requestMeme()
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribeOn(Schedulers.io())
-            ?.doOnSubscribe { progressBarMemeState.value = true }
-            ?.doFinally { progressBarMemeState.value = false }
-            ?.subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doOnSubscribe { progressBarMemeState.value = true }
+            .doFinally { progressBarMemeState.value = false }
+            .subscribe({
                 allMeme.value = it
             }, {
                 listEmptyState.value = true

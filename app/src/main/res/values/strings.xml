@@ -12,4 +12,8 @@
     <string name="toolbar_title_list_memes">Популярные мемы</string>
     <string name="info_list_empty">Не удалось загрузить ленту</string>
     <string name="item_meme_image">A meme</string>
+    <string name="toolbar_item_create_meme">СОЗДАТЬ</string>
+    <string name="title_create_meme_et">Заголовок</string>
+    <string name="description_create_meme_et">Текст</string>
+    <string name="remove_im_create_meme">remove_im</string>
 </resources>

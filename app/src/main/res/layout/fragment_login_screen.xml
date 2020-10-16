@@ -32,8 +32,7 @@
                 <studio.carbonylgroup.textfieldboxes.ExtendedEditText
                     android:id="@+id/input_field_login"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"/>
+                    android:layout_height="wrap_content"/>
             </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
 
             <studio.carbonylgroup.textfieldboxes.TextFieldBoxes
@@ -48,7 +47,6 @@
                     android:id="@+id/input_field_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
                     android:maxLength="6"/>
             </studio.carbonylgroup.textfieldboxes.TextFieldBoxes>
         </LinearLayout>
