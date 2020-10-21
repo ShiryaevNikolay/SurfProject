@@ -95,6 +95,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         viewFragment = view
 
         mSwipeRefreshLayout = view.mainLayout
+        mSwipeRefreshLayout.apply {
+            setColorSchemeColors(resources.getColor(R.color.secondaryColor))
+            setProgressBackgroundColorSchemeColor(resources.getColor(R.color.colorAccent))
+        }
 
         initRecyclerView(view.recyclerView)
 
