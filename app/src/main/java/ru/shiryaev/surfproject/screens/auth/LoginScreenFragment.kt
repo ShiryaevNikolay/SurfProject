@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.LiveData
@@ -80,7 +79,7 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
         input_field_password
         view_btn.login_btn.setOnClickListener(this)
         input_layout_password.endIconImageButton.setOnClickListener(this)
-        input_layout_password.setSimpleTextChangeWatcher { theNewText, isError ->
+        input_layout_password.setSimpleTextChangeWatcher { theNewText, _ ->
             cursorPosition = input_field_password.selectionStart
             // Если поле ввода пароля не пустое
             if (theNewText.isNotEmpty()) {

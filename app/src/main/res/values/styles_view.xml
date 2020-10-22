@@ -47,4 +47,8 @@
         <item name="colorControlActivated">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="TextLimitError" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/warningColor</item>
+    </style>
 </resources>

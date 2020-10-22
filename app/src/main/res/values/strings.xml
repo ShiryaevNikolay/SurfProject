@@ -16,4 +16,7 @@
     <string name="title_create_meme_et">Заголовок</string>
     <string name="description_create_meme_et">Текст</string>
     <string name="remove_im_create_meme">remove_im</string>
+    <string name="title_add_im_dialog">Выбрать фото</string>
+    <string name="title_gallery_btn">Из галереи</string>
+    <string name="title_camera_btn">Сделать фото</string>
 </resources>
