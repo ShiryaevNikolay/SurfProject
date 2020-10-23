@@ -2,9 +2,7 @@ package ru.shiryaev.surfproject.screens.main
 
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -14,10 +12,12 @@ import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_screen.view.*
+import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.screens.AccountFragment
 import ru.shiryaev.surfproject.screens.CreateMemeFragment
 import ru.shiryaev.surfproject.screens.MemesFragment
 import ru.shiryaev.surfproject.screens.ShowMemeFragment
@@ -28,6 +28,12 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavView: BottomNavigationView
     private lateinit var mNavController: NavController
+    private lateinit var mContext: Context
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,15 +56,23 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         when (currentFragment) {
             MemesFragment.MEMES_FRAGMENT -> {
                 toolbarMemes(currentFragment)
+                setToolbarBgColorSecondary()
                 bottomNavView.isVisible = true
             }
             ShowMemeFragment.SHOW_MEME_FRAGMENT -> {
                 toolbarShowMeme(currentFragment)
+                setToolbarBgColorSecondary()
                 bottomNavView.isVisible = false
             }
             CreateMemeFragment.CREATE_MEME_FRAGMENT -> {
                 toolbarCreateMeme(currentFragment)
+                setToolbarBgColorSecondary()
                 bottomNavView.isVisible = false
+            }
+            AccountFragment.ACCOUNT_FRAGMENT -> {
+                toolbarAccount(currentFragment)
+                setToolbarBgColorBg()
+                bottomNavView.isVisible = true
             }
         }
     }
@@ -69,6 +83,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         toolbar.toolbar_user_info.isVisible = false
         toolbar.setNavigationOnClickListener(null)
         toolbar.toolbar_user_info.isVisible = false
+        toolbar.setBackgroundResource(R.color.secondaryColor)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
     }
@@ -76,13 +91,13 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
     private fun toolbarShowMeme(currentFragment: String) {
         toolbar.title = null
         toolbar.navigationIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_close) }
-        toolbar.toolbar_user_info.isVisible = false
         toolbar.setNavigationOnClickListener { mNavController.popBackStack() }
         toolbar.toolbar_user_info.isVisible = true
         toolbar.toolbar_user_info.layout_user_info.isVisible = true
         toolbar.toolbar_user_info.layout_user_info.toolbar_user_name.text =
             context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.getString(UserUtils.USER_NAME, "")
         toolbar.toolbar_user_info.create_meme_btn.isVisible = false
+        toolbar.setBackgroundResource(R.color.secondaryColor)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
     }
@@ -90,18 +105,28 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
     private fun toolbarCreateMeme(currentFragment: String) {
         toolbar.title = null
         toolbar.navigationIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_close) }
-        toolbar.toolbar_user_info.isVisible = false
         toolbar.setNavigationOnClickListener { mNavController.popBackStack() }
         toolbar.toolbar_user_info.isVisible = true
         toolbar.toolbar_user_info.layout_user_info.isVisible = false
         toolbar.toolbar_user_info.create_meme_btn.isVisible = true
+        toolbar.setBackgroundResource(R.color.secondaryColor)
         hideAllItemMenuToolbar()
+    }
+
+    private fun toolbarAccount(currentFragment: String) {
+        toolbar.title = null
+        toolbar.navigationIcon = null
+        toolbar.toolbar_user_info.isVisible = false
+        toolbar.setBackgroundResource(R.color.bgColor)
+        hideAllItemMenuToolbar()
+        showItemMenuToolbar(currentFragment)
     }
 
     private fun showItemMenuToolbar(currentFragment: String) {
         when (currentFragment) {
             MemesFragment.MEMES_FRAGMENT -> toolbar.menu.getItem(0).isVisible = true
             ShowMemeFragment.SHOW_MEME_FRAGMENT -> toolbar.menu.getItem(1).isVisible = true
+            AccountFragment.ACCOUNT_FRAGMENT -> toolbar.menu.getItem(2).isVisible = true
         }
     }
 
@@ -109,6 +134,22 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         for (item in 0 until toolbar.menu.size()) {
             toolbar.menu.getItem(item).isVisible = false
         }
+    }
+
+    private fun setToolbarBgColorSecondary() {
+        // Устанавливаем цвет StatusBar
+        val window: Window = (mContext as MainActivity).window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(mContext, R.color.secondaryColor)
+    }
+
+    private fun setToolbarBgColorBg() {
+        // Устанавливаем цвет StatusBar
+        val window: Window = (mContext as MainActivity).window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(mContext, R.color.bgColor)
     }
 
     override fun showMeme(meme: Meme) {

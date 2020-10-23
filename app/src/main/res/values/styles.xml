@@ -12,5 +12,6 @@
         <item name="snackbarStyle">@style/SnackbarStyle</item>
         <item name="bottomNavigationStyle">@style/BottomNavViewStyle</item>
         <item name="checkboxStyle">@style/FavoriteCheckBox</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
     </style>
 </resources>

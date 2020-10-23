@@ -1,6 +1,8 @@
 package ru.shiryaev.surfproject.interfaces
 
 interface NavGraphFragment {
-    fun startLoginScreenFragment()
-    fun startMainScreenFragment()
+    fun startLoginScreenFragmentFromSplashScreenFragment()
+    fun startMainScreenFragmentFromLoginScreenFragment()
+    fun startMainScreenFragmentFromSplashScreenFragment()
+    fun startLoginScreenFragmentFromMainScreenFragment()
 }

@@ -51,4 +51,8 @@
     <style name="TextLimitError" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/warningColor</item>
     </style>
+
+    <style name="PopupMenuStyle" parent="@android:style/Widget.PopupMenu">
+        <item name="android:popupBackground">@drawable/popup_bg</item>
+    </style>
 </resources>

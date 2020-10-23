@@ -67,14 +67,18 @@ class MainActivityViewModel : ViewModel() {
 
     private fun refreshMeme() {
         repository.requestMeme()
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribeOn(Schedulers.io())
-            ?.doFinally { refreshState.value = false }
-            ?.subscribe({
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .doFinally { refreshState.value = false }
+            .subscribe({
                 allMeme.value = it
             }, {
                 listEmptyState.value = true
                 snackbarMemeState.value = true
             })
+    }
+
+    companion object {
+        const val IS_LOGIN = "LOGIN/LOGOUT"
     }
 }

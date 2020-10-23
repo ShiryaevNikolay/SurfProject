@@ -14,4 +14,7 @@ interface NetworkServiceApi {
 
     @GET("memes")
     fun getMemes() : Single<List<Meme>>
+
+    @POST("auth/logout")
+    fun postLogout()
 }

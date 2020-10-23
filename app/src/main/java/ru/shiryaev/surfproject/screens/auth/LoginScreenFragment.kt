@@ -5,10 +5,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -18,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_login_screen.*
 import kotlinx.android.synthetic.main.fragment_login_screen.view.*
 import kotlinx.android.synthetic.main.fragment_login_screen.view_btn
 import ru.shiryaev.surfproject.MainActivity
+import ru.shiryaev.surfproject.MainActivityViewModel
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.NavGraphFragment
 import ru.shiryaev.surfproject.models.User
@@ -51,6 +50,8 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
         val view = inflater.inflate(R.layout.fragment_login_screen, container, false)
         view.progressBar.isVisible = false
 
+        setToolbarBgColorBg()
+
         (mContext as MainActivity).snackbarLoginShow = {
             val snack = Snackbar.make(mainLayout, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Snackbar.LENGTH_LONG)
                 .setAction("Action", null)
@@ -69,7 +70,7 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
 
         userListener.observe((mContext as MainActivity), {
             saveUserData(it)
-            navGraphFragment.startMainScreenFragment()
+            navGraphFragment.startMainScreenFragmentFromLoginScreenFragment()
         })
         return view
     }
@@ -146,6 +147,7 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
 
     private fun saveUserData(user: User) {
         context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.edit()?.apply {
+            this.putBoolean(MainActivityViewModel.IS_LOGIN, true)
             this.putString(UserUtils.USER_TOKEN, user.accessToken)
             user.userInfo?.id?.let { this.putInt(UserUtils.USER_ID, it) }
             this.putString(UserUtils.USER_NAME, user.userInfo?.username)
@@ -153,5 +155,13 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
             this.putString(UserUtils.USER_LAST_NAME, user.userInfo?.lastName)
             this.putString(UserUtils.USER_DESCRIPTION, user.userInfo?.userDescription)
         }?.apply()
+    }
+
+    private fun setToolbarBgColorBg() {
+        // Устанавливаем цвет StatusBar
+        val window: Window = (mContext as MainActivity).window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.statusBarColor = ContextCompat.getColor(mContext, R.color.bgColor)
     }
 }

@@ -37,5 +37,10 @@
         android:name="ru.shiryaev.surfproject.screens.main.MainScreenFragment"
         android:label="fragment_main_screen"
         tools:layout="@layout/fragment_main_screen" >
+        <action
+            android:id="@+id/action_mainScreenFragment_to_loginScreenFragment"
+            app:destination="@id/loginScreenFragment"
+            app:popUpTo="@id/main_graph"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

@@ -1,13 +1,32 @@
 package ru.shiryaev.surfproject.screens
 
+import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_main_screen.*
+import ru.shiryaev.surfproject.MainActivity
+import ru.shiryaev.surfproject.MainActivityViewModel
 import ru.shiryaev.surfproject.R
+import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
+import ru.shiryaev.surfproject.interfaces.LogoutListener
+import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 
-class AccountFragment : Fragment() {
+class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItemClickListener {
+
+    private lateinit var currentFragment: CurrentFragmentListener
+    private lateinit var logoutListener: LogoutListener
+    private lateinit var mContext: Context
+    private lateinit var mMainScreenFragment: MainScreenFragment
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
+        logoutListener = context as LogoutListener
+        mMainScreenFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as MainScreenFragment
+        currentFragment = mMainScreenFragment
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -16,5 +35,38 @@ class AccountFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentFragment.currentFragment(ACCOUNT_FRAGMENT)
+        mMainScreenFragment.toolbar.setOnMenuItemClickListener(this)
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.menu) {
+            val popup = PopupMenu(mContext, mMainScreenFragment.popupMenu, Gravity.BOTTOM)
+            popup.menuInflater.inflate(R.menu.toolbar_account_menu, popup.menu)
+            popup.setOnMenuItemClickListener {
+                when(it.itemId) {
+                    R.id.exit -> logout()
+                }
+                return@setOnMenuItemClickListener true
+            }
+            popup.show()
+        }
+        return true
+    }
+
+    private fun logout() {
+        mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)
+            ?.edit()
+            ?.putBoolean(MainActivityViewModel.IS_LOGIN, false)
+            ?.apply()
+        logoutListener.logout()
+    }
+
+    companion object {
+        const val ACCOUNT_FRAGMENT = "AccountFragment"
     }
 }

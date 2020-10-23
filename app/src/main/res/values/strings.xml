@@ -19,4 +19,6 @@
     <string name="title_add_im_dialog">Выбрать фото</string>
     <string name="title_gallery_btn">Из галереи</string>
     <string name="title_camera_btn">Сделать фото</string>
+    <string name="title_item_menu_about_app">О приложении</string>
+    <string name="title_item_menu_exit">Выйти</string>
 </resources>
