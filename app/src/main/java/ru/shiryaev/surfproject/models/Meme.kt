@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class Meme(
     @SerializedName("createdDate")
     @Expose
-    val createdDate: Int? = null,
+    val createdDate: Long? = null,
 
     @SerializedName("description")
     @Expose

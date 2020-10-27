@@ -51,6 +51,10 @@ class MainActivityViewModel : ViewModel() {
             })
     }
 
+    fun requestLogout() {
+        repository.requestLogout()
+    }
+
     private fun loadingMeme() {
         repository.requestMeme()
             .observeOn(AndroidSchedulers.mainThread())

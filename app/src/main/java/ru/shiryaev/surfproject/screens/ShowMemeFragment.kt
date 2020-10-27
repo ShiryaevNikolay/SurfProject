@@ -40,7 +40,7 @@ class ShowMemeFragment : Fragment() {
                 photoUrl = this@with?.getString("photoUrl")
                 description = this@with?.getString("description")
                 isFavorite = this@with?.getBoolean("isFavorite")
-                createdDate = this@with?.getInt("createdDate")
+                createdDate = this@with?.getLong("createdDate")
             }
         }
         binding.meme = meme

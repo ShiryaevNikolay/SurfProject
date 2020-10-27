@@ -63,6 +63,12 @@ class AppRepository {
             .postLogin(requestBody)
     }
 
+    fun requestLogout() {
+        NetworkService
+            .getJSONApi()
+            .postLogout()
+    }
+
     companion object {
         private class InsertMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<MemeModel, Void, Void>() {
             override fun doInBackground(vararg params: MemeModel?): Void? {

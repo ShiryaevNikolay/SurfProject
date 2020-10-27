@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:layout_weight="1"
-                    android:text="@{Integer.toString(meme.createdDate)}"/>
+                    android:text="@{ru.shiryaev.surfproject.utils.UnixDateConverter.INSTANCE.convertCreatedDate(meme.createdDate)}"/>
 
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/isFavorite"

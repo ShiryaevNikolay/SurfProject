@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_screen.view.*
 import ru.shiryaev.surfproject.MainActivity
@@ -98,6 +99,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
             context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.getString(UserUtils.USER_NAME, "")
         toolbar.toolbar_user_info.create_meme_btn.isVisible = false
         toolbar.setBackgroundResource(R.color.secondaryColor)
+        Glide.with(mContext).load("file:///android_asset/avatar.jpeg").into(toolbar.toolbar_user_image)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
     }
@@ -159,7 +161,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
             putString("photoUrl", meme.photoUrl)
             putString("description", meme.description)
             putBoolean("isFavorite", meme.isFavorite!!)
-            putInt("createdDate", meme.createdDate!!)
+            putLong("createdDate", meme.createdDate!!)
         }
         mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)
     }

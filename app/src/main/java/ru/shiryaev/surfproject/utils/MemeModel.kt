@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "meme_table")
 class MemeModel  {
     @ColumnInfo(name = "createdDate")
-    var createdDate: Int? = null
+    var createdDate: Long? = null
     @ColumnInfo(name = "description")
     var description: String? = null
     @PrimaryKey
