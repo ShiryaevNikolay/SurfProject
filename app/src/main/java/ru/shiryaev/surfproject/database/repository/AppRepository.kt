@@ -2,6 +2,7 @@ package ru.shiryaev.surfproject.database.repository
 
 import android.os.AsyncTask
 import androidx.lifecycle.LiveData
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -63,8 +64,8 @@ class AppRepository {
             .postLogin(requestBody)
     }
 
-    fun requestLogout() {
-        NetworkService
+    fun requestLogout() : Completable {
+        return NetworkService
             .getJSONApi()
             .postLogout()
     }

@@ -4,8 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_main_screen.*
 import ru.shiryaev.surfproject.MainActivity
@@ -42,6 +46,25 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
             view.account_username.text = getString(UserUtils.USER_NAME, "")
             view.account_userinfo.text = getString(UserUtils.USER_DESCRIPTION, "")
         }
+
+        (mContext as MainActivity).snackbarLogoutShow = {
+            val snack = Snackbar.make(mainLayout, "Во время запроса произошла ошибка, возможно вы неверно ввели логин/пароль", Snackbar.LENGTH_LONG)
+                .setAction("Action", null)
+            if (context != null) {
+                snack.view.setBackgroundResource(R.drawable.warning_layout)
+                snack.view.findViewById<TextView>(com.google.android.material.R.id.snackbar_text)
+                    .setTextColor(ContextCompat.getColor(requireContext(), R.color.textColor))
+                snack.show()
+            }
+        }
+
+        (mContext as MainActivity).logout = {
+            mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)
+                ?.edit()
+                ?.putBoolean(MainActivityViewModel.IS_LOGIN, false)
+                ?.apply()
+            logoutListener.logout()
+        }
         return view
     }
 
@@ -67,12 +90,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
     }
 
     private fun logout() {
-        //(mContext as MainActivity).mainActivityViewModel.requestLogout()
-        mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)
-            ?.edit()
-            ?.putBoolean(MainActivityViewModel.IS_LOGIN, false)
-            ?.apply()
-        logoutListener.logout()
+        (mContext as MainActivity).mainActivityViewModel.requestLogout()
     }
 
     companion object {

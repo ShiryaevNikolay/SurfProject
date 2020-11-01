@@ -1,5 +1,6 @@
 package ru.shiryaev.surfproject.services
 
+import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -16,5 +17,5 @@ interface NetworkServiceApi {
     fun getMemes() : Single<List<Meme>>
 
     @POST("auth/logout")
-    fun postLogout()
+    fun postLogout() : Completable
 }

@@ -12,4 +12,6 @@
     <color name="textColor">#FEFEFE</color>
     <color name="ripple_effect">#501EF0D7</color>
     <color name="colorAccentDisabled">#4D1EF0D7</color>
+    <color name="colorEnabled">#1EF0D7</color>
+    <color name="colorDisabledBg">#312F51</color>
 </resources>

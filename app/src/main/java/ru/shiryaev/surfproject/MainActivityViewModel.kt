@@ -19,6 +19,7 @@ class MainActivityViewModel : ViewModel() {
 
     val progressBarLoginState = MutableLiveData<Boolean>()
     val snackbarLoginState = MutableLiveData<Boolean>()
+    val snackbarLogout = MutableLiveData<Boolean>()
 
     val user = MutableLiveData<User>()
 
@@ -27,6 +28,7 @@ class MainActivityViewModel : ViewModel() {
         listEmptyState.value = false
         snackbarMemeState.value = false
         refreshState.value = false
+        snackbarLogout.value = false
         repository = AppRepository()
     }
 
@@ -53,6 +55,13 @@ class MainActivityViewModel : ViewModel() {
 
     fun requestLogout() {
         repository.requestLogout()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
+            .subscribe({
+                snackbarLogout.value = false
+            }, {
+                snackbarLogout.value = true
+            })
     }
 
     private fun loadingMeme() {

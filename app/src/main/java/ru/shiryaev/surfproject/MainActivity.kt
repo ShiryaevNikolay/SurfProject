@@ -21,7 +21,9 @@ class MainActivity : AppCompatActivity(), NavGraphFragment, LogoutListener {
 
     var snackbarMemeShow: (() -> Unit)? = null
     var snackbarLoginShow: (() -> Unit)? = null
+    var snackbarLogoutShow: (() -> Unit)? = null
     var refreshState: (() -> Unit)? = null
+    var logout: (() -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,10 @@ class MainActivity : AppCompatActivity(), NavGraphFragment, LogoutListener {
         })
         mainActivityViewModel.snackbarLoginState.observe(this, {
             if (it) snackbarLoginShow?.invoke()
+        })
+        mainActivityViewModel.snackbarLogout.observe(this, {
+            if (it) snackbarLogoutShow?.invoke()
+            else logout?.invoke()
         })
         mainActivityViewModel.refreshState.observe(this, {
             if (!it) refreshState?.invoke()
