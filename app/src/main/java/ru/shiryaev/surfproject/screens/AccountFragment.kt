@@ -7,6 +7,8 @@ import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -18,10 +20,15 @@ import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.LogoutListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
+import ru.shiryaev.surfproject.utils.MemeModelItemController
 import ru.shiryaev.surfproject.utils.UserUtils
+import ru.surfstudio.android.easyadapter.EasyAdapter
+import ru.surfstudio.android.easyadapter.ItemList
 
 class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItemClickListener {
 
+    private val memesAdapter = EasyAdapter()
+    private val memeController = MemeModelItemController()
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var logoutListener: LogoutListener
     private lateinit var mContext: Context
@@ -65,6 +72,17 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
                 ?.apply()
             logoutListener.logout()
         }
+
+        (mContext as MainActivity).mainActivityViewModel.getAll().observe(viewLifecycleOwner, {
+            if (it != null) {
+                val memesList = ItemList.create().apply {
+                    addAll(it, memeController)
+                }
+                memesAdapter.setItems(memesList)
+            }
+        })
+
+        initRecyclerView(view.recyclerView)
         return view
     }
 
@@ -87,6 +105,14 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
             popup.show()
         }
         return true
+    }
+
+    private fun initRecyclerView(recyclerView: RecyclerView) {
+        with(recyclerView) {
+            setHasFixedSize(false)
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            adapter = memesAdapter
+        }
     }
 
     private fun logout() {

@@ -15,6 +15,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.fragment_main_screen.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
+import ru.shiryaev.surfproject.interfaces.CreateMemeListener
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.models.Meme
@@ -24,7 +25,7 @@ import ru.shiryaev.surfproject.screens.MemesFragment
 import ru.shiryaev.surfproject.screens.ShowMemeFragment
 import ru.shiryaev.surfproject.utils.UserUtils
 
-class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener {
+class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener, CreateMemeListener {
 
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavView: BottomNavigationView
@@ -76,6 +77,22 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
                 bottomNavView.isVisible = true
             }
         }
+    }
+
+    override fun showMeme(meme: Meme) {
+        val args = Bundle().apply {
+            putLong("idMeme", meme.id!!.toLong())
+            putString("title", meme.title)
+            putString("photoUrl", meme.photoUrl)
+            putString("description", meme.description)
+            putBoolean("isFavorite", meme.isFavorite!!)
+            putLong("createdDate", meme.createdDate!!)
+        }
+        mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)
+    }
+
+    override fun createMeme() {
+        mNavController.popBackStack()
     }
 
     private fun toolbarMemes(currentFragment: String) {
@@ -152,17 +169,5 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(mContext, R.color.bgColor)
-    }
-
-    override fun showMeme(meme: Meme) {
-        val args = Bundle().apply {
-            putInt("idMeme", meme.id!!.toInt())
-            putString("title", meme.title)
-            putString("photoUrl", meme.photoUrl)
-            putString("description", meme.description)
-            putBoolean("isFavorite", meme.isFavorite!!)
-            putLong("createdDate", meme.createdDate!!)
-        }
-        mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)
     }
 }

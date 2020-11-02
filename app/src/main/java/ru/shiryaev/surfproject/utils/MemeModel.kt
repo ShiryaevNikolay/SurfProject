@@ -10,9 +10,9 @@ class MemeModel  {
     var createdDate: Long? = null
     @ColumnInfo(name = "description")
     var description: String? = null
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int? = null
+    var id: Long? = null
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean? = null
     @ColumnInfo(name = "photoUrl")

@@ -1,5 +1,6 @@
 package ru.shiryaev.surfproject
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -8,6 +9,7 @@ import ru.shiryaev.surfproject.database.repository.AppRepository
 import ru.shiryaev.surfproject.models.Meme
 import ru.shiryaev.surfproject.models.User
 import ru.shiryaev.surfproject.utils.App
+import ru.shiryaev.surfproject.utils.MemeModel
 
 class MainActivityViewModel : ViewModel() {
     private var repository: AppRepository
@@ -89,6 +91,12 @@ class MainActivityViewModel : ViewModel() {
                 listEmptyState.value = true
                 snackbarMemeState.value = true
             })
+    }
+
+    fun insert(meme: MemeModel) { repository.insert(meme) }
+
+    fun getAll() : LiveData<List<MemeModel>> {
+        return repository.getAllMeme()
     }
 
     companion object {

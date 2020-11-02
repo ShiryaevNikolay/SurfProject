@@ -17,7 +17,6 @@ import javax.inject.Inject
 
 class AppRepository {
     private var memeDao: MemeDao
-    private lateinit var allMeme: LiveData<List<MemeModel>>
     @Inject
     lateinit var roomDatabase: AppRoomDatabase
 
@@ -43,7 +42,7 @@ class AppRepository {
     }
 
     fun getAllMeme() : LiveData<List<MemeModel>> {
-        return allMeme
+        return memeDao.getAllMeme()
     }
 
     fun requestMeme() : Single<List<Meme>> {

@@ -35,7 +35,7 @@ class ShowMemeFragment : Fragment() {
         val binding: FragmentShowMemeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_meme, container, false)
         with(arguments) {
             meme = MemeModel().apply {
-                id = this@with?.getInt("idMeme")
+                id = this@with?.getLong("idMeme")
                 title = this@with?.getString("title")
                 photoUrl = this@with?.getString("photoUrl")
                 description = this@with?.getString("description")
