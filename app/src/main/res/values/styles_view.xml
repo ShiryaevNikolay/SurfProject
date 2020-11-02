@@ -55,4 +55,14 @@
     <style name="PopupMenuStyle" parent="@android:style/Widget.PopupMenu">
         <item name="android:popupBackground">@drawable/popup_bg</item>
     </style>
+
+    <style name="MyAlertDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/secondaryColor</item>
+        <item name="buttonBarButtonStyle">@style/ButtonDialogStyle</item>
+    </style>
+
+    <style name="ButtonDialogStyle" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="rippleColor">@color/ripple_effect</item>
+    </style>
 </resources>

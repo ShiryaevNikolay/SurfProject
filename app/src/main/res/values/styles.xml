@@ -13,5 +13,6 @@
         <item name="bottomNavigationStyle">@style/BottomNavViewStyle</item>
         <item name="checkboxStyle">@style/FavoriteCheckBox</item>
         <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
+        <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
     </style>
 </resources>

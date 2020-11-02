@@ -147,7 +147,6 @@ class LoginScreenFragment : Fragment(), View.OnClickListener {
 
     private fun saveUserData(user: User) {
         context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.edit()?.apply {
-            this.putBoolean(MainActivityViewModel.IS_LOGIN, true)
             this.putString(UserUtils.USER_TOKEN, user.accessToken)
             user.userInfo?.id?.let { this.putInt(UserUtils.USER_ID, it) }
             this.putString(UserUtils.USER_NAME, user.userInfo?.username)

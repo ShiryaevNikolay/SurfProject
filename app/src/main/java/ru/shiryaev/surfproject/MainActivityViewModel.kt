@@ -98,8 +98,4 @@ class MainActivityViewModel : ViewModel() {
     fun getAll() : LiveData<List<MemeModel>> {
         return repository.getAllMeme()
     }
-
-    companion object {
-        const val IS_LOGIN = "LOGIN/LOGOUT"
-    }
 }

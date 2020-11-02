@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_main_screen.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.MainActivityViewModel
 import ru.shiryaev.surfproject.R
+import ru.shiryaev.surfproject.dialogs.LogoutDialog
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.LogoutListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
@@ -30,6 +31,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
 
     private val memesAdapter = EasyAdapter()
     private val memeController = MemeModelItemController()
+    private val mLogoutDialog = LogoutDialog()
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var logoutListener: LogoutListener
     private lateinit var mContext: Context
@@ -66,14 +68,6 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
             }
         }
 
-        (mContext as MainActivity).logout = {
-            mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)
-                ?.edit()
-                ?.putBoolean(MainActivityViewModel.IS_LOGIN, false)
-                ?.apply()
-            logoutListener.logout()
-        }
-
         (mContext as MainActivity).mainActivityViewModel.getAll().observe(viewLifecycleOwner, {
             if (it != null) {
                 val memesList = ItemList.create().apply {
@@ -93,6 +87,13 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         super.onResume()
         currentFragment.currentFragment(ACCOUNT_FRAGMENT)
         mMainScreenFragment.toolbar.setOnMenuItemClickListener(this)
+
+        mLogoutDialog.onClickLogoutBtn = { (mContext as MainActivity).mainActivityViewModel.requestLogout() }
+
+        (mContext as MainActivity).logout = {
+            mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.edit()?.clear()?.apply()
+            logoutListener.logout()
+        }
     }
 
     override fun onMenuItemClick(item: MenuItem?): Boolean {
@@ -119,7 +120,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
     }
 
     private fun logout() {
-        (mContext as MainActivity).mainActivityViewModel.requestLogout()
+        mLogoutDialog.show(childFragmentManager, null)
     }
 
     companion object {

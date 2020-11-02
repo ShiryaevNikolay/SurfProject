@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import ru.shiryaev.surfproject.MainActivityViewModel
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.NavGraphFragment
+import ru.shiryaev.surfproject.utils.UserUtils
 
 class SplashScreenFragment : Fragment() {
 
@@ -32,12 +33,18 @@ class SplashScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Handler().postDelayed({
-            if (mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).getBoolean(
-                    MainActivityViewModel.IS_LOGIN, false)) {
+            if (mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).contains(UserUtils.USER_ID)) {
                 navGraphFragment.startMainScreenFragmentFromSplashScreenFragment()
             } else {
                 navGraphFragment.startLoginScreenFragmentFromSplashScreenFragment()
             }
+
+//            if (mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).getBoolean(
+//                    MainActivityViewModel.IS_LOGIN, false)) {
+//                navGraphFragment.startMainScreenFragmentFromSplashScreenFragment()
+//            } else {
+//                navGraphFragment.startLoginScreenFragmentFromSplashScreenFragment()
+//            }
         }, 300)
     }
 }
