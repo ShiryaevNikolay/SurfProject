@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -80,6 +81,8 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
                 }
                 memesAdapter.setItems(memesList)
             }
+            view.info_list_empty.isVisible = memesAdapter.itemCount == 0
+            view.progressBar.isVisible = false
         })
 
         initRecyclerView(view.recyclerView)

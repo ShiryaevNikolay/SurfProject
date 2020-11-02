@@ -56,10 +56,20 @@
             android:layout_height="match_parent"
             android:paddingHorizontal="4dp" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
+        <TextView
+            android:id="@+id/info_list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/info_list_empty"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"/>
     </FrameLayout>
 </LinearLayout>

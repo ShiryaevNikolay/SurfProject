@@ -33,7 +33,6 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var showMeme: ShowMemeListener
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
-    private lateinit var viewFragment: View
     private val memesAdapter = EasyAdapter()
     private val memeController = MemeItemController()
 
@@ -91,8 +90,6 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
             view.info_list_empty.isVisible = memesAdapter.itemCount == 0
         })
-
-        viewFragment = view
 
         mSwipeRefreshLayout = view.mainLayout
         mSwipeRefreshLayout.apply {
