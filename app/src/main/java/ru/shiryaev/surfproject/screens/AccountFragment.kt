@@ -54,7 +54,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         Glide.with(mContext).load("file:///android_asset/avatar.jpeg").circleCrop().into(view.account_im)
         mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).apply {
-            view.account_username.text = getString(UserUtils.USER_NAME, "")
+            view.account_username.text = getString(UserUtils.USER_FIRST_NAME, "") + " " + getString(UserUtils.USER_LAST_NAME, "")
             view.account_userinfo.text = getString(UserUtils.USER_DESCRIPTION, "")
         }
 
