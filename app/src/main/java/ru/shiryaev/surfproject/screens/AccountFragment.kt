@@ -1,6 +1,7 @@
 package ru.shiryaev.surfproject.screens
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
@@ -16,12 +17,12 @@ import kotlinx.android.synthetic.main.fragment_account.*
 import kotlinx.android.synthetic.main.fragment_account.view.*
 import kotlinx.android.synthetic.main.fragment_main_screen.*
 import ru.shiryaev.surfproject.MainActivity
-import ru.shiryaev.surfproject.MainActivityViewModel
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.dialogs.LogoutDialog
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.LogoutListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
+import ru.shiryaev.surfproject.utils.MemeModel
 import ru.shiryaev.surfproject.utils.MemeModelItemController
 import ru.shiryaev.surfproject.utils.UserUtils
 import ru.surfstudio.android.easyadapter.EasyAdapter
@@ -88,6 +89,8 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         currentFragment.currentFragment(ACCOUNT_FRAGMENT)
         mMainScreenFragment.toolbar.setOnMenuItemClickListener(this)
 
+        memeController.onClickShareBtn = { shareMeme(it) }
+
         mLogoutDialog.onClickLogoutBtn = { (mContext as MainActivity).mainActivityViewModel.requestLogout() }
 
         (mContext as MainActivity).logout = {
@@ -119,8 +122,17 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         }
     }
 
-    private fun logout() {
-        mLogoutDialog.show(childFragmentManager, null)
+    private fun logout() { mLogoutDialog.show(childFragmentManager, null) }
+
+    private fun shareMeme(data: MemeModel) {
+        val shareMeme = Intent.createChooser(Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, data.title)
+            putExtra(Intent.EXTRA_STREAM, data.photoUrl)
+            type = "image/*"
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }, null)
+        startActivity(shareMeme)
     }
 
     companion object {

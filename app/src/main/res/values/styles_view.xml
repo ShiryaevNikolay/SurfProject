@@ -65,4 +65,13 @@
         <item name="android:textColor">@color/colorAccent</item>
         <item name="rippleColor">@color/ripple_effect</item>
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@color/colorAccent</item>
+<!--        <item name="queryBackground">@android:color/transparent</item>-->
+        <item name="searchIcon">@drawable/ic_search</item>
+        <item name="closeIcon">@drawable/ic_close</item>
+        <item name="queryHint">@string/search_hint</item>
+        <item name="searchHintIcon">@null</item>
+    </style>
 </resources>

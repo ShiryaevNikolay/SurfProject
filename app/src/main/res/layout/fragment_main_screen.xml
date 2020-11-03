@@ -22,7 +22,31 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:background="@color/secondaryColor"
-        app:menu="@menu/toolbar_memes_menu">
+        app:menu="@menu/toolbar_memes_menu"
+        app:collapseIcon="@drawable/ic_back">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/search_til"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/TextInputLayoutCursorStyle"
+            app:boxStrokeColor="@color/secondaryColor"
+            app:boxStrokeWidth="0dp"
+            app:hintEnabled="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
+                android:textSize="17sp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar_user_info"

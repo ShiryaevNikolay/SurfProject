@@ -4,24 +4,24 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="" />
 
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="" />
 
     <item
         android:id="@+id/menu"
         android:icon="@drawable/ic_context_menu"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="" />
 
     <item
         android:id="@+id/close"
         android:icon="@drawable/ic_close"
-        app:showAsAction="ifRoom"
-        android:title="" />
+        android:title=""
+        app:showAsAction="always"/>
 </menu>

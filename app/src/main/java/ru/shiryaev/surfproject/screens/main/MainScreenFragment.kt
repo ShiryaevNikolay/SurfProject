@@ -25,7 +25,7 @@ import ru.shiryaev.surfproject.screens.MemesFragment
 import ru.shiryaev.surfproject.screens.ShowMemeFragment
 import ru.shiryaev.surfproject.utils.UserUtils
 
-class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener, CreateMemeListener {
+class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener, CreateMemeListener, MenuItem.OnMenuItemClickListener {
 
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavView: BottomNavigationView
@@ -54,6 +54,11 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         return view
     }
 
+    override fun onResume() {
+        super.onResume()
+        toolbar.menu.findItem(R.id.search).setOnMenuItemClickListener(this)
+    }
+
     override fun currentFragment(currentFragment: String) {
         when (currentFragment) {
             MemesFragment.MEMES_FRAGMENT -> {
@@ -67,7 +72,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
                 bottomNavView.isVisible = false
             }
             CreateMemeFragment.CREATE_MEME_FRAGMENT -> {
-                toolbarCreateMeme(currentFragment)
+                toolbarCreateMeme()
                 setToolbarBgColorSecondary()
                 bottomNavView.isVisible = false
             }
@@ -95,12 +100,20 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         mNavController.popBackStack()
     }
 
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.search) {
+            showSearchView()
+        }
+        return true
+    }
+
     private fun toolbarMemes(currentFragment: String) {
         toolbar.title = context?.resources?.getString(R.string.toolbar_title_list_memes)
         toolbar.navigationIcon = null
         toolbar.toolbar_user_info.isVisible = false
         toolbar.setNavigationOnClickListener(null)
         toolbar.toolbar_user_info.isVisible = false
+        toolbar.search_til.isVisible = false
         toolbar.setBackgroundResource(R.color.secondaryColor)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
@@ -115,19 +128,21 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         toolbar.toolbar_user_info.layout_user_info.toolbar_user_name.text =
             context?.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE)?.getString(UserUtils.USER_NAME, "")
         toolbar.toolbar_user_info.create_meme_btn.isVisible = false
+        toolbar.search_til.isVisible = false
         toolbar.setBackgroundResource(R.color.secondaryColor)
         Glide.with(mContext).load("file:///android_asset/avatar.jpeg").into(toolbar.toolbar_user_image)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
     }
 
-    private fun toolbarCreateMeme(currentFragment: String) {
+    private fun toolbarCreateMeme() {
         toolbar.title = null
         toolbar.navigationIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_close) }
         toolbar.setNavigationOnClickListener { mNavController.popBackStack() }
         toolbar.toolbar_user_info.isVisible = true
         toolbar.toolbar_user_info.layout_user_info.isVisible = false
         toolbar.toolbar_user_info.create_meme_btn.isVisible = true
+        toolbar.search_til.isVisible = false
         toolbar.setBackgroundResource(R.color.secondaryColor)
         hideAllItemMenuToolbar()
     }
@@ -136,6 +151,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         toolbar.title = null
         toolbar.navigationIcon = null
         toolbar.toolbar_user_info.isVisible = false
+        toolbar.search_til.isVisible = false
         toolbar.setBackgroundResource(R.color.bgColor)
         hideAllItemMenuToolbar()
         showItemMenuToolbar(currentFragment)
@@ -169,5 +185,14 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
         window.statusBarColor = ContextCompat.getColor(mContext, R.color.bgColor)
+    }
+
+    private fun showSearchView() {
+        hideAllItemMenuToolbar()
+        toolbar.title = null
+        toolbar.navigationIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_back) }
+        toolbar.setNavigationOnClickListener { toolbarMemes(MemesFragment.MEMES_FRAGMENT) }
+        toolbar.menu.getItem(3).isVisible = true
+        toolbar.search_til.isVisible = true
     }
 }

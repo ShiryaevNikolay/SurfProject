@@ -24,4 +24,5 @@
     <string name="title_logout_dialog">Действительно хотите выйти?</string>
     <string name="exit_btn_logout_dialog">Выйти</string>
     <string name="cancel_btn_logout_dialog">Отмена</string>
+    <string name="search_hint">Поиск</string>
 </resources>

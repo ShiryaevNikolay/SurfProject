@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -16,18 +17,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_main_screen.*
+import kotlinx.android.synthetic.main.fragment_main_screen.view.*
 import kotlinx.android.synthetic.main.fragment_memes.view.*
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.utils.App
 import ru.shiryaev.surfproject.utils.MemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
-class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem.OnMenuItemClickListener {
 
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var showMeme: ShowMemeListener
@@ -40,6 +44,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
     private lateinit var progressBarState: LiveData<Boolean>
     private lateinit var listEmptyState: LiveData<Boolean>
     private lateinit var refreshState: LiveData<Boolean>
+    private lateinit var mMainScreenFragment: MainScreenFragment
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -48,9 +53,10 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         listEmptyState = (mContext as MainActivity).mainActivityViewModel.listEmptyState
         listMeme = (mContext as MainActivity).mainActivityViewModel.allMeme
         refreshState = (mContext as MainActivity).mainActivityViewModel.refreshState
-        with((context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0)) {
-            currentFragment = this as CurrentFragmentListener
-            showMeme = this as ShowMemeListener
+        mMainScreenFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as MainScreenFragment
+        with(mMainScreenFragment) {
+            currentFragment = this
+            showMeme = this
         }
     }
 
@@ -112,12 +118,21 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         memeController.onClickItemListener = { itemClick(it) }
 
         mSwipeRefreshLayout.setOnRefreshListener(this)
+
+        mMainScreenFragment.toolbar.menu.findItem(R.id.close).setOnMenuItemClickListener(this)
     }
 
     override fun onRefresh() {
         mSwipeRefreshLayout.post {
             (mContext as MainActivity).mainActivityViewModel.requestMeme(App.REFRESH_MEME)
         }
+    }
+
+    override fun onMenuItemClick(item: MenuItem?): Boolean {
+        if (item?.itemId == R.id.close) {
+            mMainScreenFragment.toolbar.search_et.text = null
+        }
+        return true
     }
 
     private fun initRecyclerView(recyclerView: RecyclerView) {

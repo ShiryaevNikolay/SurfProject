@@ -14,5 +14,6 @@
         <item name="checkboxStyle">@style/FavoriteCheckBox</item>
         <item name="android:popupMenuStyle">@style/PopupMenuStyle</item>
         <item name="alertDialogTheme">@style/MyAlertDialogTheme</item>
+        <item name="searchViewStyle">@style/SearchViewStyle</item>
     </style>
 </resources>
