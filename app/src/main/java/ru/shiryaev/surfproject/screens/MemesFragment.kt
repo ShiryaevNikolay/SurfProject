@@ -24,10 +24,10 @@ import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
-import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.models.NetworkMeme
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.utils.App
-import ru.shiryaev.surfproject.utils.MemeItemController
+import ru.shiryaev.surfproject.models.controllers.NetworkMemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
@@ -38,9 +38,9 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private val memesAdapter = EasyAdapter()
-    private val memeController = MemeItemController()
+    private val memeController = NetworkMemeItemController()
 
-    private lateinit var listMeme: LiveData<List<Meme>>
+    private lateinit var listMeme: LiveData<List<NetworkMeme>>
     private lateinit var progressBarState: LiveData<Boolean>
     private lateinit var listEmptyState: LiveData<Boolean>
     private lateinit var refreshState: LiveData<Boolean>
@@ -143,7 +143,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         }
     }
 
-    private fun shareMeme(data: Meme) {
+    private fun shareMeme(data: NetworkMeme) {
         val shareMeme = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, data.title)
@@ -154,7 +154,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         startActivity(shareMeme)
     }
 
-    private fun itemClick(data: Meme) {
+    private fun itemClick(data: NetworkMeme) {
         showMeme.showMeme(data)
     }
 

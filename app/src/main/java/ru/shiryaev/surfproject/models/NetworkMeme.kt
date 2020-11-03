@@ -3,7 +3,7 @@ package ru.shiryaev.surfproject.models
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class Meme(
+data class NetworkMeme(
     @SerializedName("createdDate")
     @Expose
     val createdDate: Long? = null,

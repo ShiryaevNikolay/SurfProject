@@ -34,7 +34,7 @@ import ru.shiryaev.surfproject.dialogs.AddImageDialog
 import ru.shiryaev.surfproject.interfaces.CreateMemeListener
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
-import ru.shiryaev.surfproject.utils.MemeModel
+import ru.shiryaev.surfproject.models.DbMeme
 import java.io.File
 import java.io.FileOutputStream
 
@@ -236,7 +236,7 @@ class CreateMemeFragment : Fragment(), View.OnClickListener {
 
     private fun createMeme() {
         mCurrentPhotoPath = saveImage((imageMeme.drawable as BitmapDrawable).bitmap).toString()
-        val meme = MemeModel().apply {
+        val meme = DbMeme().apply {
             title = titleLayout.title_et.text.toString()
             description = descriptionText.text.toString()
             photoUrl = mCurrentPhotoPath

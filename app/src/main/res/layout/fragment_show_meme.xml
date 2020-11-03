@@ -6,7 +6,7 @@
     <data>
         <variable
             name="meme"
-            type="ru.shiryaev.surfproject.utils.MemeModel" />
+            type="ru.shiryaev.surfproject.models.DbMeme" />
 
         <import type="android.view.View" />
     </data>

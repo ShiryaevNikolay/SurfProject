@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.shiryaev.surfproject.database.repository.AppRepository
-import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.models.NetworkMeme
 import ru.shiryaev.surfproject.models.User
 import ru.shiryaev.surfproject.utils.App
-import ru.shiryaev.surfproject.utils.MemeModel
+import ru.shiryaev.surfproject.models.DbMeme
 
 class MainActivityViewModel : ViewModel() {
     private var repository: AppRepository
-    val allMeme = MutableLiveData<List<Meme>>()
+    val allMeme = MutableLiveData<List<NetworkMeme>>()
     val progressBarMemeState = MutableLiveData<Boolean>()
     val listEmptyState = MutableLiveData<Boolean>()
     val snackbarMemeState = MutableLiveData<Boolean>()
@@ -93,9 +93,9 @@ class MainActivityViewModel : ViewModel() {
             })
     }
 
-    fun insert(meme: MemeModel) { repository.insert(meme) }
+    fun insert(meme: DbMeme) { repository.insert(meme) }
 
-    fun getAll() : LiveData<List<MemeModel>> {
+    fun getAll() : LiveData<List<DbMeme>> {
         return repository.getAllMeme()
     }
 }

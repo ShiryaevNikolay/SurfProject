@@ -1,11 +1,11 @@
-package ru.shiryaev.surfproject.utils
+package ru.shiryaev.surfproject.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "meme_table")
-class MemeModel  {
+class DbMeme  {
     @ColumnInfo(name = "createdDate")
     var createdDate: Long? = null
     @ColumnInfo(name = "description")

@@ -22,8 +22,8 @@ import ru.shiryaev.surfproject.dialogs.LogoutDialog
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.LogoutListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
-import ru.shiryaev.surfproject.utils.MemeModel
-import ru.shiryaev.surfproject.utils.MemeModelItemController
+import ru.shiryaev.surfproject.models.DbMeme
+import ru.shiryaev.surfproject.models.controllers.DbMemeItemController
 import ru.shiryaev.surfproject.utils.UserUtils
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
@@ -31,7 +31,7 @@ import ru.surfstudio.android.easyadapter.ItemList
 class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItemClickListener {
 
     private val memesAdapter = EasyAdapter()
-    private val memeController = MemeModelItemController()
+    private val memeController = DbMemeItemController()
     private val mLogoutDialog = LogoutDialog()
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var logoutListener: LogoutListener
@@ -124,7 +124,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
 
     private fun logout() { mLogoutDialog.show(childFragmentManager, null) }
 
-    private fun shareMeme(data: MemeModel) {
+    private fun shareMeme(data: DbMeme) {
         val shareMeme = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, data.title)

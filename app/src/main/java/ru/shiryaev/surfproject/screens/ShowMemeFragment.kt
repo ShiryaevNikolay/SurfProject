@@ -12,10 +12,10 @@ import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.databinding.FragmentShowMemeBinding
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
-import ru.shiryaev.surfproject.utils.MemeModel
+import ru.shiryaev.surfproject.models.DbMeme
 
 class ShowMemeFragment : Fragment() {
-    private lateinit var meme: MemeModel
+    private lateinit var meme: DbMeme
     private lateinit var mContext: Context
     private lateinit var currentFragment: CurrentFragmentListener
     private lateinit var parentFragment: MainScreenFragment
@@ -34,7 +34,7 @@ class ShowMemeFragment : Fragment() {
     ): View? {
         val binding: FragmentShowMemeBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_show_meme, container, false)
         with(arguments) {
-            meme = MemeModel().apply {
+            meme = DbMeme().apply {
                 id = this@with?.getLong("idMeme")
                 title = this@with?.getString("title")
                 photoUrl = this@with?.getString("photoUrl")

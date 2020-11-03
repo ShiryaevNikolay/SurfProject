@@ -1,7 +1,7 @@
 package ru.shiryaev.surfproject.interfaces
 
-import ru.shiryaev.surfproject.models.Meme
+import ru.shiryaev.surfproject.models.NetworkMeme
 
 interface ShowMemeListener {
-    fun showMeme(meme: Meme)
+    fun showMeme(meme: NetworkMeme)
 }
