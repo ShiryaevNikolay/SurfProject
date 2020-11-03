@@ -19,4 +19,6 @@ class DbMeme  {
     var photoUrl: String? = null
     @ColumnInfo(name = "title")
     var title: String? = null
+    @ColumnInfo(name = "services")
+    var services: String? = null
 }

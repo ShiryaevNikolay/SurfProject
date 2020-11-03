@@ -18,7 +18,7 @@ import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CreateMemeListener
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
-import ru.shiryaev.surfproject.models.NetworkMeme
+import ru.shiryaev.surfproject.models.DbMeme
 import ru.shiryaev.surfproject.screens.AccountFragment
 import ru.shiryaev.surfproject.screens.CreateMemeFragment
 import ru.shiryaev.surfproject.screens.MemesFragment
@@ -26,6 +26,8 @@ import ru.shiryaev.surfproject.screens.ShowMemeFragment
 import ru.shiryaev.surfproject.utils.UserUtils
 
 class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener, CreateMemeListener, MenuItem.OnMenuItemClickListener {
+
+    var onNavigationClickToolbar: (() -> Unit)? = null
 
     private lateinit var toolbar: Toolbar
     private lateinit var bottomNavView: BottomNavigationView
@@ -84,16 +86,20 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
         }
     }
 
-    override fun showMeme(meme: NetworkMeme) {
+    override fun showMeme(meme: DbMeme, currentFragment: String) {
         val args = Bundle().apply {
-            putLong("idMeme", meme.id!!.toLong())
+            putLong("idMeme", meme.id!!)
             putString("title", meme.title)
             putString("photoUrl", meme.photoUrl)
             putString("description", meme.description)
             putBoolean("isFavorite", meme.isFavorite!!)
             putLong("createdDate", meme.createdDate!!)
         }
-        mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)
+        if (currentFragment == MemesFragment.MEMES_FRAGMENT) {
+            mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)
+        } else if (currentFragment == AccountFragment.ACCOUNT_FRAGMENT) {
+            mNavController.navigate(R.id.action_accountFragment_to_showMemeFragment, args)
+        }
     }
 
     override fun createMeme() { mNavController.popBackStack() }
@@ -196,9 +202,13 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
             title = null
             toolbar_user_info.isVisible = false
             navigationIcon = context?.let { ContextCompat.getDrawable(it, R.drawable.ic_back) }
-            setNavigationOnClickListener { toolbarMemes(MemesFragment.MEMES_FRAGMENT) }
+            setNavigationOnClickListener {
+                toolbarMemes(MemesFragment.MEMES_FRAGMENT)
+                onNavigationClickToolbar?.invoke()
+            }
             menu.getItem(3).isVisible = true
             search_til.isVisible = true
+            search_et.text = null
         }
     }
 }

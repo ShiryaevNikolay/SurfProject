@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -24,10 +25,10 @@ import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.ShowMemeListener
-import ru.shiryaev.surfproject.models.NetworkMeme
+import ru.shiryaev.surfproject.models.DbMeme
+import ru.shiryaev.surfproject.models.controllers.DbMemeItemController
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.utils.App
-import ru.shiryaev.surfproject.models.controllers.NetworkMemeItemController
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
@@ -38,9 +39,9 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
     private lateinit var mContext: Context
     private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
     private val memesAdapter = EasyAdapter()
-    private val memeController = NetworkMemeItemController()
+    private val memeDbController = DbMemeItemController()
 
-    private lateinit var listMeme: LiveData<List<NetworkMeme>>
+    private lateinit var infoEmptyListTv: TextView
     private lateinit var progressBarState: LiveData<Boolean>
     private lateinit var listEmptyState: LiveData<Boolean>
     private lateinit var refreshState: LiveData<Boolean>
@@ -51,7 +52,6 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         mContext = context
         progressBarState = (mContext as MainActivity).mainActivityViewModel.progressBarMemeState
         listEmptyState = (mContext as MainActivity).mainActivityViewModel.listEmptyState
-        listMeme = (mContext as MainActivity).mainActivityViewModel.allMeme
         refreshState = (mContext as MainActivity).mainActivityViewModel.refreshState
         mMainScreenFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as MainScreenFragment
         with(mMainScreenFragment) {
@@ -67,6 +67,8 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_memes, container, false)
+
+        infoEmptyListTv = view.info_list_empty
 
         progressBarState.observe((mContext as MainActivity), { view.progressBar.isVisible = it })
 
@@ -87,16 +89,6 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
             view.info_list_empty.isVisible = memesAdapter.itemCount == 0
         }
 
-        listMeme.observe((mContext as MainActivity), {
-            if (it != null) {
-                val memesList = ItemList.create().apply {
-                    addAll(it, memeController)
-                }
-                memesAdapter.setItems(memesList)
-            }
-            view.info_list_empty.isVisible = memesAdapter.itemCount == 0
-        })
-
         mSwipeRefreshLayout = view.mainLayout
         mSwipeRefreshLayout.apply {
             setColorSchemeColors(resources.getColor(R.color.secondaryColor))
@@ -113,13 +105,31 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         super.onResume()
         currentFragment.currentFragment(MEMES_FRAGMENT)
 
-        memeController.onClickShareBtn = { shareMeme(it) }
+        memeDbController.onClickShareBtn = { shareMeme(it) }
 
-        memeController.onClickItemListener = { itemClick(it) }
+        memeDbController.onClickItemListener = { itemClick(it) }
 
         mSwipeRefreshLayout.setOnRefreshListener(this)
 
         mMainScreenFragment.toolbar.menu.findItem(R.id.close).setOnMenuItemClickListener(this)
+
+        mMainScreenFragment.onNavigationClickToolbar = {
+            (mContext as MainActivity).mainActivityViewModel.getAll().observe((mContext as MainActivity), {listMemeOfFilter ->
+                setListToAdapter(listMemeOfFilter)
+            })
+        }
+
+        mMainScreenFragment.toolbar.search_et.addTextChangedListener {
+            (mContext as MainActivity).mainActivityViewModel.getMemeOfFilter(it.toString()).observe((mContext as MainActivity), { listMemeOfFilter ->
+                setListToAdapter(listMemeOfFilter)
+                infoEmptyListTv.isVisible = memesAdapter.itemCount == 0
+            })
+        }
+
+        (mContext as MainActivity).mainActivityViewModel.getAll().observe((mContext as MainActivity), {
+            setListToAdapter(it)
+            infoEmptyListTv.isVisible = memesAdapter.itemCount == 0
+        })
     }
 
     override fun onRefresh() {
@@ -143,7 +153,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         }
     }
 
-    private fun shareMeme(data: NetworkMeme) {
+    private fun shareMeme(data: DbMeme) {
         val shareMeme = Intent.createChooser(Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, data.title)
@@ -154,8 +164,15 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         startActivity(shareMeme)
     }
 
-    private fun itemClick(data: NetworkMeme) {
-        showMeme.showMeme(data)
+    private fun itemClick(data: DbMeme) { showMeme.showMeme(data, MEMES_FRAGMENT) }
+
+    private fun setListToAdapter(listMeme: List<DbMeme>?) {
+        if (listMeme != null) {
+            val memesList = ItemList.create().apply {
+                addAll(listMeme, memeDbController)
+            }
+            memesAdapter.setItems(memesList)
+        }
     }
 
     companion object {

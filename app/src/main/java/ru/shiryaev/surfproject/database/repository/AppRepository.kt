@@ -25,25 +25,21 @@ class AppRepository {
         memeDao = roomDatabase.memeDao()
     }
 
-    fun insert(meme: DbMeme) {
-        InsertMemeAsyncTask(memeDao).execute(meme)
-    }
+    fun insert(meme: DbMeme) { InsertMemeAsyncTask(memeDao).execute(meme) }
 
-    fun update(meme: DbMeme) {
-        UpdateMemeAsyncTask(memeDao).execute(meme)
-    }
+    fun insertList(listMeme: List<DbMeme>) { InsertListMemeAsyncTask(memeDao).execute(listMeme) }
 
-    fun delete(meme: DbMeme) {
-        DeleteMemeAsyncTask(memeDao).execute(meme)
-    }
+    fun update(meme: DbMeme) { UpdateMemeAsyncTask(memeDao).execute(meme) }
 
-    fun deleteAllMeme() {
-        DeleteAllMemeAsyncTask(memeDao).execute()
-    }
+    fun delete(meme: DbMeme) { DeleteMemeAsyncTask(memeDao).execute(meme) }
 
-    fun getAllMeme() : LiveData<List<DbMeme>> {
-        return memeDao.getAllMeme()
-    }
+    fun deleteAllMeme() { DeleteAllMemeAsyncTask(memeDao).execute() }
+
+    fun getAllMeme() : LiveData<List<DbMeme>> = memeDao.getAllMeme()
+
+    fun getAllMemeOfUser(username: String) : LiveData<List<DbMeme>> = memeDao.getAllMemeOfUser(username)
+
+    fun getMemeOfFilter(filter: String) : LiveData<List<DbMeme>> = memeDao.getMemeOfFilter(filter)
 
     fun requestMeme() : Single<List<NetworkMeme>> {
         return NetworkService
@@ -73,6 +69,13 @@ class AppRepository {
         private class InsertMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<DbMeme, Void, Void>() {
             override fun doInBackground(vararg params: DbMeme?): Void? {
                 params[0]?.let { memeDao.insert(it) }
+                return null
+            }
+        }
+
+        private class InsertListMemeAsyncTask(private val memeDao: MemeDao) : AsyncTask<List<DbMeme>, Void, Void>() {
+            override fun doInBackground(vararg params: List<DbMeme>?): Void? {
+                params[0]?.let { memeDao.insertList(it) }
                 return null
             }
         }

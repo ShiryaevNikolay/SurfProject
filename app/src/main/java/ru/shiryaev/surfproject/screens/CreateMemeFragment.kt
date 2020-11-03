@@ -35,6 +35,7 @@ import ru.shiryaev.surfproject.interfaces.CreateMemeListener
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.models.DbMeme
+import ru.shiryaev.surfproject.utils.UserUtils
 import java.io.File
 import java.io.FileOutputStream
 
@@ -242,6 +243,7 @@ class CreateMemeFragment : Fragment(), View.OnClickListener {
             photoUrl = mCurrentPhotoPath
             createdDate = System.currentTimeMillis()
             isFavorite = false
+            services = mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).getString(UserUtils.USER_NAME, "")
         }
         (mContext as MainActivity).mainActivityViewModel.insert(meme)
         createMemeListener.createMeme()

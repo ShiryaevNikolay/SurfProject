@@ -1,5 +1,6 @@
 package ru.shiryaev.surfproject.screens
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,6 +22,7 @@ import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.dialogs.LogoutDialog
 import ru.shiryaev.surfproject.interfaces.CurrentFragmentListener
 import ru.shiryaev.surfproject.interfaces.LogoutListener
+import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.models.DbMeme
 import ru.shiryaev.surfproject.models.controllers.DbMemeItemController
@@ -37,6 +39,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
     private lateinit var logoutListener: LogoutListener
     private lateinit var mContext: Context
     private lateinit var mMainScreenFragment: MainScreenFragment
+    private lateinit var showMeme: ShowMemeListener
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,8 +47,10 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         logoutListener = context as LogoutListener
         mMainScreenFragment = (context as MainActivity).supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0) as MainScreenFragment
         currentFragment = mMainScreenFragment
+        showMeme = mMainScreenFragment
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,7 +74,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
             }
         }
 
-        (mContext as MainActivity).mainActivityViewModel.getAll().observe(viewLifecycleOwner, {
+        (mContext as MainActivity).mainActivityViewModel.getAllMemeOfUser(mContext.getSharedPreferences("UserDataPreferences", Context.MODE_PRIVATE).getString(UserUtils.USER_NAME, "")!!).observe(viewLifecycleOwner, {
             if (it != null) {
                 val memesList = ItemList.create().apply {
                     addAll(it, memeController)
@@ -90,6 +95,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         mMainScreenFragment.toolbar.setOnMenuItemClickListener(this)
 
         memeController.onClickShareBtn = { shareMeme(it) }
+        memeController.onClickItemListener = { itemClick(it) }
 
         mLogoutDialog.onClickLogoutBtn = { (mContext as MainActivity).mainActivityViewModel.requestLogout() }
 
@@ -134,6 +140,8 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         }, null)
         startActivity(shareMeme)
     }
+
+    private fun itemClick(data: DbMeme) { showMeme.showMeme(data, ACCOUNT_FRAGMENT) }
 
     companion object {
         const val ACCOUNT_FRAGMENT = "AccountFragment"

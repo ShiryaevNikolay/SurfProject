@@ -13,7 +13,7 @@ import ru.shiryaev.surfproject.models.DbMeme
 
 class MainActivityViewModel : ViewModel() {
     private var repository: AppRepository
-    val allMeme = MutableLiveData<List<NetworkMeme>>()
+//    var allMeme = LiveData(listOf(DbMeme))
     val progressBarMemeState = MutableLiveData<Boolean>()
     val listEmptyState = MutableLiveData<Boolean>()
     val snackbarMemeState = MutableLiveData<Boolean>()
@@ -66,6 +66,14 @@ class MainActivityViewModel : ViewModel() {
             })
     }
 
+    fun insert(meme: DbMeme) { repository.insert(meme) }
+
+    fun getAll() : LiveData<List<DbMeme>> = repository.getAllMeme()
+
+    fun getAllMemeOfUser(username: String) : LiveData<List<DbMeme>> = repository.getAllMemeOfUser(username)
+
+    fun getMemeOfFilter(filter: String) : LiveData<List<DbMeme>> = repository.getMemeOfFilter(filter)
+
     private fun loadingMeme() {
         repository.requestMeme()
             .observeOn(AndroidSchedulers.mainThread())
@@ -73,7 +81,7 @@ class MainActivityViewModel : ViewModel() {
             .doOnSubscribe { progressBarMemeState.value = true }
             .doFinally { progressBarMemeState.value = false }
             .subscribe({
-                allMeme.value = it
+                saveMemeToDatabase(it)
             }, {
                 listEmptyState.value = true
                 snackbarMemeState.value = true
@@ -86,16 +94,27 @@ class MainActivityViewModel : ViewModel() {
             .subscribeOn(Schedulers.io())
             .doFinally { refreshState.value = false }
             .subscribe({
-                allMeme.value = it
+                saveMemeToDatabase(it)
             }, {
                 listEmptyState.value = true
                 snackbarMemeState.value = true
             })
     }
 
-    fun insert(meme: DbMeme) { repository.insert(meme) }
-
-    fun getAll() : LiveData<List<DbMeme>> {
-        return repository.getAllMeme()
+    private fun saveMemeToDatabase(listMeme: List<NetworkMeme>) {
+        val listDbMeme = mutableListOf<DbMeme>()
+        for (item in listMeme) {
+            val meme = DbMeme().apply {
+                id = item.id?.toLong()
+                title = item.title
+                description = item.description
+                photoUrl = item.photoUrl
+                createdDate = item.createdDate
+                isFavorite = item.isFavorite
+                services = "network"
+            }
+            listDbMeme += meme
+        }
+        repository.insertList(listDbMeme)
     }
 }

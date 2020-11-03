@@ -18,7 +18,11 @@
         android:id="@+id/accountFragment"
         android:name="ru.shiryaev.surfproject.screens.AccountFragment"
         android:label="fragment_account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_accountFragment_to_showMemeFragment"
+            app:destination="@id/showMemeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/createMemeFragment"
         android:name="ru.shiryaev.surfproject.screens.CreateMemeFragment"
