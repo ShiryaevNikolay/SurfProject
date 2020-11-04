@@ -13,7 +13,6 @@ import ru.shiryaev.surfproject.models.DbMeme
 
 class MainActivityViewModel : ViewModel() {
     private var repository: AppRepository
-//    var allMeme = LiveData(listOf(DbMeme))
     val progressBarMemeState = MutableLiveData<Boolean>()
     val listEmptyState = MutableLiveData<Boolean>()
     val snackbarMemeState = MutableLiveData<Boolean>()
@@ -67,6 +66,8 @@ class MainActivityViewModel : ViewModel() {
     }
 
     fun insert(meme: DbMeme) { repository.insert(meme) }
+
+    fun update(meme: DbMeme) { repository.update(meme) }
 
     fun getAll() : LiveData<List<DbMeme>> = repository.getAllMeme()
 

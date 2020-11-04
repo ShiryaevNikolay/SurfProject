@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.google.android.material.checkbox.MaterialCheckBox
 import ru.shiryaev.surfproject.MainActivity
 import ru.shiryaev.surfproject.R
 import ru.shiryaev.surfproject.databinding.FragmentShowMemeBinding
@@ -41,15 +42,22 @@ class ShowMemeFragment : Fragment() {
                 description = this@with?.getString("description")
                 isFavorite = this@with?.getBoolean("isFavorite")
                 createdDate = this@with?.getLong("createdDate")
+                services = this@with?.getString("services")
             }
         }
         binding.meme = meme
+        binding.favoriteBtn.setOnClickListener { onClickFavorite(meme, (it as MaterialCheckBox).isChecked) }
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         currentFragment.currentFragment(SHOW_MEME_FRAGMENT)
+    }
+
+    private fun onClickFavorite(meme: DbMeme, checked: Boolean) {
+        meme.isFavorite = checked
+        (mContext as MainActivity).mainActivityViewModel.update(meme)
     }
 
     companion object {

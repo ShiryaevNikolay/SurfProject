@@ -29,6 +29,7 @@ import ru.shiryaev.surfproject.models.DbMeme
 import ru.shiryaev.surfproject.models.controllers.DbMemeItemController
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.utils.App
+import ru.shiryaev.surfproject.utils.SpaceItemDecoration
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
 
@@ -105,9 +106,11 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
         super.onResume()
         currentFragment.currentFragment(MEMES_FRAGMENT)
 
-        memeDbController.onClickShareBtn = { shareMeme(it) }
-
-        memeDbController.onClickItemListener = { itemClick(it) }
+        memeDbController.apply {
+            onClickShareBtn = { shareMeme(it) }
+            onClickItemListener = { itemClick(it) }
+            onClickFavoriteBtn = { (mContext as MainActivity).mainActivityViewModel.update(it) }
+        }
 
         mSwipeRefreshLayout.setOnRefreshListener(this)
 
@@ -150,6 +153,7 @@ class MemesFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, MenuItem
             setHasFixedSize(false)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = memesAdapter
+            addItemDecoration(SpaceItemDecoration(12))
         }
     }
 

@@ -94,6 +94,7 @@ class MainScreenFragment : Fragment(), CurrentFragmentListener, ShowMemeListener
             putString("description", meme.description)
             putBoolean("isFavorite", meme.isFavorite!!)
             putLong("createdDate", meme.createdDate!!)
+            putString("services", meme.services)
         }
         if (currentFragment == MemesFragment.MEMES_FRAGMENT) {
             mNavController.navigate(R.id.action_memesFragment_to_showMemeFragment, args)

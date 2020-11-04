@@ -26,6 +26,7 @@ import ru.shiryaev.surfproject.interfaces.ShowMemeListener
 import ru.shiryaev.surfproject.screens.main.MainScreenFragment
 import ru.shiryaev.surfproject.models.DbMeme
 import ru.shiryaev.surfproject.models.controllers.DbMemeItemController
+import ru.shiryaev.surfproject.utils.SpaceItemDecoration
 import ru.shiryaev.surfproject.utils.UserUtils
 import ru.surfstudio.android.easyadapter.EasyAdapter
 import ru.surfstudio.android.easyadapter.ItemList
@@ -94,8 +95,11 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
         currentFragment.currentFragment(ACCOUNT_FRAGMENT)
         mMainScreenFragment.toolbar.setOnMenuItemClickListener(this)
 
-        memeController.onClickShareBtn = { shareMeme(it) }
-        memeController.onClickItemListener = { itemClick(it) }
+        memeController.apply {
+            onClickShareBtn = { shareMeme(it) }
+            onClickItemListener = { itemClick(it) }
+            onClickFavoriteBtn = { (mContext as MainActivity).mainActivityViewModel.update(it) }
+        }
 
         mLogoutDialog.onClickLogoutBtn = { (mContext as MainActivity).mainActivityViewModel.requestLogout() }
 
@@ -125,6 +129,7 @@ class AccountFragment : Fragment(), androidx.appcompat.widget.Toolbar.OnMenuItem
             setHasFixedSize(false)
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             adapter = memesAdapter
+            addItemDecoration(SpaceItemDecoration(20))
         }
     }
 

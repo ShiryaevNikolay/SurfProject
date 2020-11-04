@@ -13,6 +13,7 @@ import ru.surfstudio.android.easyadapter.holder.BindableViewHolder
 class DbMemeItemController : BindableItemController<DbMeme, DbMemeItemController.Holder>() {
     var onClickItemListener: ((DbMeme) -> Unit)? = null
     var onClickShareBtn: ((DbMeme) -> Unit)? = null
+    var onClickFavoriteBtn: ((DbMeme) -> Unit)? = null
 
     override fun createViewHolder(parent: ViewGroup) = Holder(parent)
 
@@ -31,8 +32,11 @@ class DbMemeItemController : BindableItemController<DbMeme, DbMemeItemController
                 titleMeme.text = data.title
                 favoriteBtn.isChecked = data.isFavorite!!
 
+                favoriteBtn.setOnClickListener {
+                    data.isFavorite = favoriteBtn.isChecked
+                    onClickFavoriteBtn?.invoke(data)
+                }
                 shareBtn.setOnClickListener { onClickShareBtn?.invoke(data) }
-
                 itemView.setOnClickListener { onClickItemListener?.invoke(data) }
             }
         }
